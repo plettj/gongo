@@ -12,8 +12,9 @@ I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.
 
 ## Engine to-dos
 
-- [ ] Decide on a routing protocol the engine API will use, and implement one endpoint for said protocol.
-- [ ] Create a bare-bones Go viewer in a nice CLI.
+- [x] Decide on an API protocol (gRPC, REST, GraphQL) we'll use, and router (gorilla/mux, gin, go) we'll use. Decisions: REST + gorilla/mux.
+- [ ] Set up and test a first simple API request and response example to mimic the creation of a game.
+- [ ] Create a bare-bones Go viewer in a nice CLI. Example: [Tetrgo](https://github.com/Broderick-Westrope/tetrigo?tab=readme-ov-file) built with [BubbleTea](https://github.com/charmbracelet/bubbletea?tab=readme-ov-file).
 - [ ] Be able to load Go games into the viewer based on a standard game representation.
 - [ ] Research the computationally fastest way to represent a large Go game's board, and implement it.
 - [ ] Research and decide on the various rules of Go I'll be supporting.
@@ -29,6 +30,8 @@ I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.
 - **Architecture:** Server/Client (until [Go WASM](https://github.com/golang/go/issues/28631) supports [threads](https://caniuse.com/wasm-threads))
 - **Hosting:** [Railway](https://railway.app/)
 - **Framework:** None (saved by [the crowd](https://www.reddit.com/r/golang/comments/q3r8qo/do_you_guys_use_frameworks_with_go_for_backend/))
+- **CLI:** [Bubbletea](https://github.com/charmbracelet/bubbletea)
+- **Website:** Hoping to host on _gongo.dev_ eventually
 
 ## Engine
 
@@ -42,6 +45,8 @@ I hope to implement _self-play_ learning in this Go engine.
 
 - Followed Go's official [tour](https://go.dev/tour/list) to learn the basics.
 - Learned Go code structure from [these](https://go.dev/doc/modules/layout#server-project) [four](https://developer20.com/how-to-structure-go-code/) [layout](https://skife.org/golang/2013/03/24/go_dev_env.html) [standards](https://github.com/golang-standards/project-layout).
+- Compared [gRPC vs REST](https://blog.postman.com/grpc-vs-rest/) ([and](https://blog.postman.com/grpc-vs-graphql/) [GraphQL](https://blog.postman.com/graphql-vs-rest/)). Decided on [REST](https://dev.to/envitab/how-to-build-an-api-using-go-ffk) with `gorilla/mux` (not `gin` or `chi`) to start.
+- Compared [goCLI](https://github.com/urfave/cli) to [tview](https://github.com/rivo/tview) to [BubbleTea](https://github.com/charmbracelet/bubbletea), deciding on BubbleTea.
 
 ---
 
