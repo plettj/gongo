@@ -1,4 +1,4 @@
-<div align="center" style="padding: 0px 50px"><img width="100%" src="gallery/gongo-banner.png" /></div>
+<div align="center" style="padding: 0px 50px"><img width="100%" src="_files/gallery/gongo-banner.png" /></div>
 
 <div align="center" style="text-align: center; width: 100%">
 <h1>gongo - The Go Go Engine</h1>
@@ -18,7 +18,7 @@ I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.
 - **Framework:** None (saved by [the crowd](https://www.reddit.com/r/golang/comments/q3r8qo/do_you_guys_use_frameworks_with_go_for_backend/))
 - **CLI:** [Bubbletea](https://github.com/charmbracelet/bubbletea)
 - **API Testing:** [Postman](https://www.postman.com/)
-- **Website:** Hoping to host on _gongo.dev_ eventually
+- **Website:** Hoping to host on _gongo.dev_ eventually ([this](https://www.reddit.com/r/baduk/comments/18cnmvj/awfull_experience_with_learning_go/) is motivation)
 
 ## Engine
 
