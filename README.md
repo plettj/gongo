@@ -10,20 +10,6 @@ I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.
 
 ---
 
-## Engine to-dos
-
-- [x] Decide on an API protocol (gRPC, REST, GraphQL) we'll use, and router (gorilla/mux, gin, go) we'll use. Decisions: REST + gorilla/mux.
-- [ ] Set up and test a first simple API request and response example to mimic the creation of a game.
-- [ ] Create a bare-bones Go viewer in a nice CLI. Example: [Tetrgo](https://github.com/Broderick-Westrope/tetrigo?tab=readme-ov-file) built with [BubbleTea](https://github.com/charmbracelet/bubbletea?tab=readme-ov-file).
-- [ ] Be able to load Go games into the viewer based on a standard game representation.
-- [ ] Research the computationally fastest way to represent a large Go game's board, and implement it.
-- [ ] Research and decide on the various rules of Go I'll be supporting.
-- [ ] Write a spec for the rules my engine supports.
-- [ ] Research the computationally fastest way people have made move generators for Go.
-- [ ] (large) Implement a Go move generator.
-
----
-
 ## Project Infrastructure
 
 - **Go Engine Code:** Referencing [GNU Go](https://www.gnu.org/software/gnugo/gnugo_4.html#SEC39) and [KataGo](https://github.com/lightvector/KataGo/blob/master/cpp/README.md)
@@ -31,6 +17,7 @@ I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.
 - **Hosting:** [Railway](https://railway.app/)
 - **Framework:** None (saved by [the crowd](https://www.reddit.com/r/golang/comments/q3r8qo/do_you_guys_use_frameworks_with_go_for_backend/))
 - **CLI:** [Bubbletea](https://github.com/charmbracelet/bubbletea)
+- **API Testing:** [Postman](https://www.postman.com/)
 - **Website:** Hoping to host on _gongo.dev_ eventually
 
 ## Engine
