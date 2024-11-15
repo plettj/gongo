@@ -38,5 +38,3 @@ I hope to implement _self-play_ learning in this Go engine.
 ---
 
 _Project approach is inspired by [Lucas](https://github.com/Strophox)'s [Tetrs in Rust](https://github.com/Strophox/tetrs?tab=readme-ov-file)._
-
-[^1]: As stated in the [first sentence](https://en.wikipedia.org/wiki/AlphaGo#History) of AlphaGo's Wikipedia article.
