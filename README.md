@@ -1,4 +1,4 @@
-<div align="center" style="padding: 0px 50px"><img width="100%" src="gallery/gongo-banner.png" /></div>
+<div align="center" style="padding: 0px 50px"><img width="100%" src="_files/gallery/gongo-banner.png" /></div>
 
 <div align="center" style="text-align: center; width: 100%">
 <h1>gongo - The Go Go Engine</h1>
@@ -10,20 +10,6 @@ I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.
 
 ---
 
-## Engine to-dos
-
-- [x] Decide on an API protocol (gRPC, REST, GraphQL) we'll use, and router (gorilla/mux, gin, go) we'll use. Decisions: REST + gorilla/mux.
-- [ ] Set up and test a first simple API request and response example to mimic the creation of a game.
-- [ ] Create a bare-bones Go viewer in a nice CLI. Example: [Tetrgo](https://github.com/Broderick-Westrope/tetrigo?tab=readme-ov-file) built with [BubbleTea](https://github.com/charmbracelet/bubbletea?tab=readme-ov-file).
-- [ ] Be able to load Go games into the viewer based on a standard game representation.
-- [ ] Research the computationally fastest way to represent a large Go game's board, and implement it.
-- [ ] Research and decide on the various rules of Go I'll be supporting.
-- [ ] Write a spec for the rules my engine supports.
-- [ ] Research the computationally fastest way people have made move generators for Go.
-- [ ] (large) Implement a Go move generator.
-
----
-
 ## Project Infrastructure
 
 - **Go Engine Code:** Referencing [GNU Go](https://www.gnu.org/software/gnugo/gnugo_4.html#SEC39) and [KataGo](https://github.com/lightvector/KataGo/blob/master/cpp/README.md)
@@ -31,7 +17,8 @@ I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.
 - **Hosting:** [Railway](https://railway.app/)
 - **Framework:** None (saved by [the crowd](https://www.reddit.com/r/golang/comments/q3r8qo/do_you_guys_use_frameworks_with_go_for_backend/))
 - **CLI:** [Bubbletea](https://github.com/charmbracelet/bubbletea)
-- **Website:** Hoping to host on _gongo.dev_ eventually
+- **API Testing:** [Postman](https://www.postman.com/)
+- **Website:** Hoping to host on _gongo.dev_ eventually ([this](https://www.reddit.com/r/baduk/comments/18cnmvj/awfull_experience_with_learning_go/) is motivation)
 
 ## Engine
 
@@ -47,9 +34,8 @@ I hope to implement _self-play_ learning in this Go engine.
 - Learned Go code structure from [these](https://go.dev/doc/modules/layout#server-project) [four](https://developer20.com/how-to-structure-go-code/) [layout](https://skife.org/golang/2013/03/24/go_dev_env.html) [standards](https://github.com/golang-standards/project-layout).
 - Compared [gRPC vs REST](https://blog.postman.com/grpc-vs-rest/) ([and](https://blog.postman.com/grpc-vs-graphql/) [GraphQL](https://blog.postman.com/graphql-vs-rest/)). Decided on [REST](https://dev.to/envitab/how-to-build-an-api-using-go-ffk) with `gorilla/mux` (not `gin` or `chi`) to start.
 - Compared [goCLI](https://github.com/urfave/cli) to [tview](https://github.com/rivo/tview) to [BubbleTea](https://github.com/charmbracelet/bubbletea), deciding on BubbleTea.
+- Learned [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)s to implement 8-character game IDs [like lichess](https://github.com/lichess-org/lila/blob/master/modules/game/src/main/IdGenerator.scala) (currently unbatched).
 
 ---
 
 _Project approach is inspired by [Lucas](https://github.com/Strophox)'s [Tetrs in Rust](https://github.com/Strophox/tetrs?tab=readme-ov-file)._
-
-[^1]: As stated in the [first sentence](https://en.wikipedia.org/wiki/AlphaGo#History) of AlphaGo's Wikipedia article.
