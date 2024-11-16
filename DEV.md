@@ -23,6 +23,18 @@ Run a go program (short for `go run <filepath>`):
 just run
 ```
 
+Get a new dependency:
+
+```bash
+go get <path-to-file>
+```
+
+Clean up unused dependencies:
+
+```bash
+go mod tidy
+```
+
 ### Misc
 
 - Turns out [online-go](https://online-go.com/) is ubiquitously the best, but then there's [gokgs](https://www.gokgs.com/), [fox weiqi](https://www.foxwq.com/), and [pandanet](https://pandanet-igs.com/) roughly in that order.
