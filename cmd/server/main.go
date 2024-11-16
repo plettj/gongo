@@ -58,6 +58,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.moves = append(m.moves, m.cursor)
 				m.board[m.cursor[0]+m.cursor[1]*19] = m.turn
 				m.turn = 3 - m.turn
+				// TODO: Refactor, along with this entire terminal viewer.
+				if m.cursor[1] < 19-1 && m.board[m.cursor[0]+(m.cursor[1]+1)*19] == 0 {
+					m.cursor[1]++
+				} else if m.cursor[1] > 0 && m.board[m.cursor[0]+(m.cursor[1]-1)*19] == 0 {
+					m.cursor[1]--
+				} else if m.cursor[0] < 19-1 && m.board[(m.cursor[0]+1)+m.cursor[1]*19] == 0 {
+					m.cursor[0]++
+				} else if m.cursor[0] > 0 && m.board[(m.cursor[0]-1)+m.cursor[1]*19] == 0 {
+					m.cursor[0]--
+				}
 			}
 		}
 	}
@@ -70,7 +80,7 @@ func (m Model) View() string {
 	if m.turn == 2 {
 		turn = "White"
 	}
-	s := fmt.Sprintf("%s's turn to place a stone!\n\n", turn)
+	s := fmt.Sprintf("\nGongo Terminal Player\n\n%s's turn to place a stone.\n\n", turn)
 
 	// Render the board
 	for y := 0; y < 19; y++ {
