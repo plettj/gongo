@@ -36,6 +36,8 @@ I hope to implement _self-play_ learning in this Go engine.
 - Learned [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)s to implement 8-character game IDs [like lichess](https://github.com/lichess-org/lila/blob/master/modules/game/src/main/IdGenerator.scala) (currently unbatched).
 - Learned the [Elm Architecture](https://guide.elm-lang.org/architecture/) to understand [BubbleTea's basics](https://github.com/charmbracelet/bubbletea/tree/master/tutorials/basics).
 - Go [slices](https://go.dev/blog/slices-intro).
+- How to [write good comments](https://www.digitalocean.com/community/tutorials/how-to-write-comments-in-go).
+- Dove into [SGF](https://red-bean.com/sgf/index.html) (specifically, [Go SGF](https://red-bean.com/sgf/go.html)) to write my own parser and converter. Examples [here](https://red-bean.com/sgf/examples/).
 
 ---
 
