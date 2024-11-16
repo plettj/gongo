@@ -1,4 +1,4 @@
-<div align="center" style="padding: 0px 50px"><img width="50%" src="_files/art/gongo-simple.png" /></div>
+<div align="center" style="padding: 0px 50px"><img width="190px" src="_files/art/gongo-simple.png" /></div>
 <div align="center" style="text-align: center; width: 100%">
 <h1>Gongo - The Go Go Engine</h1>
 </div>
