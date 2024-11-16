@@ -35,7 +35,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.board[m.cursor[0]+m.cursor[1]*19] = m.turn
 				m.turn = 3 - m.turn
 
-				// TODO: Refactor, along with this entire terminal viewer.
+				// TODO: Refactor this when I re-implement the Update function
 				if m.cursor[1] < 19-1 && m.board[m.cursor[0]+(m.cursor[1]+1)*19] == 0 {
 					m.cursor[1]++
 				} else if m.cursor[1] > 0 && m.board[m.cursor[0]+(m.cursor[1]-1)*19] == 0 {
