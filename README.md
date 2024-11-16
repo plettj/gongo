@@ -1,10 +1,9 @@
-<div align="center" style="padding: 0px 50px"><img width="100%" src="_files/gallery/gongo-banner.png" /></div>
-
+<div align="center" style="padding: 0px 50px"><img width="50%" src="_files/art/gongo-simple.png" /></div>
 <div align="center" style="text-align: center; width: 100%">
-<h1>gongo - The Go Go Engine</h1>
+<h1>Gongo - The Go Go Engine</h1>
 </div>
 
-This repo is a server-side [Go](<https://en.wikipedia.org/wiki/Go_(game)>) (game) engine written in [Go](https://go.dev/) (language).
+This repo is a server-side [Go](<https://en.wikipedia.org/wiki/Go_(game)>) (game) engine written in [Go](https://go.dev/) (language)
 
 I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.com/) in the Go language, so I'll be documenting some of that learning here.
 
