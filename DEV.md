@@ -4,8 +4,8 @@
 
 - [x] Decide on an API protocol (gRPC, REST, GraphQL) we'll use, and router (gorilla/mux, gin, go) we'll use. Decisions: REST + gorilla/mux.
 - [x] Set up and test a first simple API request and response example to mimic the creation of a game. [Go REST](https://medium.com/@Moesif/building-a-restful-api-with-go-dbd6e7aecf87) tutorial. [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) specification.
-- [ ] Create a bare-bones Go viewer in a nice CLI. Example: [Tetrgo](https://github.com/Broderick-Westrope/tetrigo?tab=readme-ov-file) built with [BubbleTea](https://github.com/charmbracelet/bubbletea?tab=readme-ov-file).
-- [ ] Be able to load Go games into the viewer based on a standard game representation.
+- [x] Create a bare-bones Go viewer in a nice CLI. Example: [Tetrgo](https://github.com/Broderick-Westrope/tetrigo?tab=readme-ov-file) built with [BubbleTea](https://github.com/charmbracelet/bubbletea?tab=readme-ov-file).
+- [ ] Be able to load Go games into the viewer based on [sgf](https://red-bean.com/sgf/go.html).
 - [ ] Research the computationally fastest way to represent a large Go game's board, and implement it.
 - [ ] Research and decide on the various rules of Go I'll be supporting.
 - [ ] Write a spec for the rules my engine supports.
@@ -23,7 +23,40 @@ Run a go program (short for `go run <filepath>`):
 just run
 ```
 
-### Misc
+Get a new dependency:
+
+```bash
+go get <path-to-file>
+```
+
+Clean up unused dependencies:
+
+```bash
+go mod tidy
+```
+
+### Miscellaneous
+
+<details>
+<summary>My VSCode settings and extensions</summary>
+<br>
+
+VSCode `settings.json` Golang entry:
+
+```json
+"[go]": {
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "golang.go",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": false
+    }
+  },
+```
+
+Recommended extensions:
+
+</details>
 
 - Turns out [online-go](https://online-go.com/) is ubiquitously the best, but then there's [gokgs](https://www.gokgs.com/), [fox weiqi](https://www.foxwq.com/), and [pandanet](https://pandanet-igs.com/) roughly in that order.
 - For documenting my APIs I should use [OAS](https://spec.openapis.org/oas/latest.html).
