@@ -12,7 +12,7 @@ func (m Model) View() string {
 	// Render the board
 	for y := 0; y < 19; y++ {
 		for x := 0; x < 19; x++ {
-			cell := "╶╴"
+			cell := " -"
 			switch m.board[x+y*19] {
 			case 1:
 				cell = "⚫"
@@ -20,7 +20,11 @@ func (m Model) View() string {
 				cell = "⚪"
 			}
 			if x == m.cursor[0] && y == m.cursor[1] {
-				cell = "[]"
+				if turn == "Black" {
+					cell = "◾" // or ⬛
+				} else {
+					cell = "◽" // or ⬜
+				}
 			}
 			s += cell
 		}
