@@ -35,7 +35,28 @@ Clean up unused dependencies:
 go mod tidy
 ```
 
-### Misc
+### Miscellaneous
+
+<details>
+<summary>My VSCode settings and extensions</summary>
+<br>
+
+VSCode `settings.json` Golang entry:
+
+```json
+"[go]": {
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "golang.go",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": false
+    }
+  },
+```
+
+Recommended extensions:
+
+</details>
 
 - Turns out [online-go](https://online-go.com/) is ubiquitously the best, but then there's [gokgs](https://www.gokgs.com/), [fox weiqi](https://www.foxwq.com/), and [pandanet](https://pandanet-igs.com/) roughly in that order.
 - For documenting my APIs I should use [OAS](https://spec.openapis.org/oas/latest.html).

@@ -52,7 +52,7 @@ func rotate48bit(snowflake int64) int64 {
 func encode48bitToUrl(id int64) string {
 	bytes := make([]byte, 6)
 	for i := 0; i < 6; i++ {
-		bytes[i] = byte(id >> uint(40 - i * 8))
+		bytes[i] = byte(id >> uint(40-i*8))
 	}
 	return base64.URLEncoding.EncodeToString(bytes)
 }
