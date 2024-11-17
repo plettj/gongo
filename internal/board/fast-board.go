@@ -1,11 +1,9 @@
 package board
 
-type Board19 = [361]uint8
-type Moves19 = [361]bool
-
 type Board struct {
 	size  uint8
-	board Board19
+	board [361]uint8
+	prev  *Board
 }
 
 func NewBoard(size uint8) *Board {
@@ -24,8 +22,8 @@ func (b *Board) RemoveStone(x, y uint8) {
 	b.board[x+y*b.size] = 0
 }
 
-func (b *Board) GetMoves() Moves19 {
-	var moves Moves19
+func (b *Board) GetMoves() [361]bool {
+	var moves [361]bool
 	for i := range b.board {
 		moves[i] = b.board[i] == 0
 	}
