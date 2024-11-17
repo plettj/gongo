@@ -61,7 +61,4 @@ Note that I'm not disabling the import organization, as despite how [annoying](h
 ### Longer-term To-dos
 
 - Make my custom-written snowflake generator a public go package.
-
-```
-
-```
+- Make my custom-written large-bitboard handler a public go package.

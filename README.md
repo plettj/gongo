@@ -38,6 +38,7 @@ I hope to implement _self-play_ learning in this Go engine.
 - Go [slices](https://go.dev/blog/slices-intro).
 - How to [write good comments](https://www.digitalocean.com/community/tutorials/how-to-write-comments-in-go).
 - Dove into [SGF](https://red-bean.com/sgf/index.html) (specifically, [Go SGF](https://red-bean.com/sgf/go.html)) to write my own parser and converter. Examples [here](https://red-bean.com/sgf/examples/).
+- Learned [Go Compiler Intrinsics](https://dave.cheney.net/2019/08/20/go-compiler-intrinsics) so I could do [Go bit math](https://pkg.go.dev/math/bits) faster.
 
 ---
 
