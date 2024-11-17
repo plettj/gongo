@@ -1,7 +1,7 @@
 /*
 Gongo Board Smart Game Format Parser
 
-This parser supports the following interpretation of SGF Go game records.
+This parser should support the following interpretation of SGF Go game records.
 
 Resource: https://en.wikipedia.org/wiki/Smart_Game_Format#About_the_format
           Examples in this repository, too.

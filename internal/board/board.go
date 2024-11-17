@@ -1,3 +1,10 @@
+// The spec for the two comprehensive board representations I'll be designing.
+//
+// - (GBN) General Baduk Notation - Covers everything (analogous to SGF) but more specifically to Go.
+// - (SBN) Static Baduk Notation - Covers the minimal information required to pick up where one left off (unsure if it will support SuperKo)
+//
+// The general Baduk notation will be a superset of the static Baduk notation.
+
 package board
 
 type Color uint8
