@@ -5,8 +5,6 @@
 - [x] Decide on an API protocol (gRPC, REST, GraphQL) we'll use, and router (gorilla/mux, gin, go) we'll use. Decisions: REST + gorilla/mux.
 - [x] Set up and test a first simple API request and response example to mimic the creation of a game. [Go REST](https://medium.com/@Moesif/building-a-restful-api-with-go-dbd6e7aecf87) tutorial. [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) specification.
 - [x] Create a bare-bones Go viewer in a nice CLI. Example: [Tetrgo](https://github.com/Broderick-Westrope/tetrigo?tab=readme-ov-file) built with [BubbleTea](https://github.com/charmbracelet/bubbletea?tab=readme-ov-file).
-- [ ] Create example `.ggn` and `.sgn` files.
-- [ ] Define on a `.md` file the exact specification of games my online player will be capable of.
 - [ ] Be able to load Go games into the viewer based on [sgf](https://red-bean.com/sgf/go.html). Examples [here](https://red-bean.com/sgf/examples/).
       SGF's [way of storing branches](https://red-bean.com/sgf/var.html) comes from [this](https://en.wikipedia.org/wiki/Newick_format).
       Summary of Go SGF [here](https://en.wikipedia.org/wiki/Smart_Game_Format#About_the_format) or examples in the repo.
@@ -62,8 +60,16 @@ Note that I'm not disabling the import organization, as despite how [annoying](h
 
 - Turns out [online-go](https://online-go.com/) is ubiquitously the best, but then there's [gokgs](https://www.gokgs.com/), [fox weiqi](https://www.foxwq.com/), and [pandanet](https://pandanet-igs.com/) roughly in that order.
 - For documenting my APIs I should use [OAS](https://spec.openapis.org/oas/latest.html).
+- Rules for [Go](https://en.wikipedia.org/wiki/Rules_of_Go)
+- Rules for [Weiqi](https://www.cs.cmu.edu/~wjh/go/rules/Chinese.html).
+- Rules for [AGA](https://www.cs.cmu.edu/~wjh/go/rules/AGA.html)
+- Rules for [Baduk](http://english.baduk.or.kr/sub02_02.htm)
+- Rules for [Ing's SST](https://www.cs.cmu.edu/~wjh/go/rules/KSS.html)
+- Rules for [New Zealand](https://go.org.nz/index.php/about-go/new-zealand-rules-of-go)
+- Resource for [Japanese vs Chinese](https://polgote.com/en/blog/go-rules-japanese-vs-chinese/) rules.
 
 ### Longer-term To-dos
 
 - Make my custom-written snowflake generator a public go package.
-- Make my custom-written large-bitboard handler a public go package.
+- Create example `.ggn` and `.sgn` files.
+- Define on a `.md` file the exact specification of games my online player will be capable of.

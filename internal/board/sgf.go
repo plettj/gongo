@@ -27,7 +27,7 @@ Lines beginning with // are lines I am choosing not to support.
 - OT[time] - Overtime control
 // ON[text] - Opening (Fuseki) information (rarely used)
 - PL[color] - Color of player to play next
-// HA[num] - Handicap (same as KM, Komi, so it's redundant)
+- HA[num] - Handicap, for Baduk rules http://english.baduk.or.kr/sub02_02.htm
 - RE[result] - Result of the game (?, W+#, B+#, W+R (resignation), Draw/void/"No result" [TODO: idk how draw is written])
 - SZ[#x#] - Board size (num x num)
 - KM[num] - Komi
