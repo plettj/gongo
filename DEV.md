@@ -5,6 +5,7 @@
 - [x] Decide on an API protocol (gRPC, REST, GraphQL) we'll use, and router (gorilla/mux, gin, go) we'll use. Decisions: REST + gorilla/mux.
 - [x] Set up and test a first simple API request and response example to mimic the creation of a game. [Go REST](https://medium.com/@Moesif/building-a-restful-api-with-go-dbd6e7aecf87) tutorial. [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) specification.
 - [x] Create a bare-bones Go viewer in a nice CLI. Example: [Tetrgo](https://github.com/Broderick-Westrope/tetrigo?tab=readme-ov-file) built with [BubbleTea](https://github.com/charmbracelet/bubbletea?tab=readme-ov-file).
+- [ ] Create example `.ggn` and `.sgn` files.
 - [ ] Define on a `.md` file the exact specification of games my online player will be capable of.
 - [ ] Be able to load Go games into the viewer based on [sgf](https://red-bean.com/sgf/go.html). Examples [here](https://red-bean.com/sgf/examples/).
       SGF's [way of storing branches](https://red-bean.com/sgf/var.html) comes from [this](https://en.wikipedia.org/wiki/Newick_format).
