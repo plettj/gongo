@@ -1,5 +1,7 @@
 # General Go Notation v0.1
 
+_Currently Deprecated - using SGF[4]_
+
 This is the official specification of **General Go Notation (GGN)**, version `0.1`.
 
 **GGN** is a human-readable file format designed to represent a complete game of [_Go_](<https://en.wikipedia.org/wiki/Go_(game)>) (also known as _Baduk_ or _Weiqi_), including annotations, variations, and metadata. It is an alternative to the [Smart Game Format (SGF)](https://www.red-bean.com/sgf/) for Go, [GM[1]](https://www.red-bean.com/sgf/go.html).

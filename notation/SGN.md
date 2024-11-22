@@ -1,5 +1,7 @@
 # Static Go Notation v0.1
 
+_Currently Deprecated - using SGF[4]_
+
 This is the official specification of **Static Go Notation (SGN)**, version `0.1`.
 
 **SGN** is a human-readable file format designed to represent a snapshot of a [_Go_](<https://en.wikipedia.org/wiki/Go_(game)>) game, exactly the amount of information necessary to resume the game from that point. It is analogous to the [FEN](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation) in chess.

@@ -1,25 +1,44 @@
+/*
+Fast board implementation for Go games.
+
+Unsure of the best way. Below are my options.
+- [361]uint8s (current)
+- [19][19]uint8s
+- 3 [19]uint32s
+*/
+
 package board
 
 type Board struct {
 	size  uint8
-	board [361]uint8
-	prev  *Board
+	board [361]uint8 // 0 = empty, 1 = black, 2 = white, 3 = ko
+}
+
+// Individual board location.
+type Loc struct {
+	X, Y uint8
+}
+
+// Representation of any stone state.
+type Stone struct {
+	X, Y  uint8
+	Color uint8
 }
 
 func NewBoard(size uint8) *Board {
 	return &Board{size: size}
 }
 
-func (b *Board) CheckStone(x, y uint8) uint8 {
-	return b.board[x+y*b.size]
+func (b *Board) CheckStone(l Loc) uint8 {
+	return b.board[l.X+l.Y*b.size]
 }
 
-func (b *Board) SetStone(x, y, color uint8) {
-	b.board[x+y*b.size] = color
+func (b *Board) SetStone(s Stone) {
+	b.board[s.X+s.Y*b.size] = s.Color
 }
 
-func (b *Board) RemoveStone(x, y uint8) {
-	b.board[x+y*b.size] = 0
+func (b *Board) RemoveStone(l Loc) {
+	b.board[l.X+l.Y*b.size] = 0
 }
 
 func (b *Board) GetMoves() [361]bool {
@@ -29,11 +48,3 @@ func (b *Board) GetMoves() [361]bool {
 	}
 	return moves
 }
-
-// TODO: Define a spec for a board state that stores all board functions.
-
-// 1. "Static Baduk (or Board) Notation" (SBN) will be my new spec for go games, equivalent to FEN and therefore supplementary to SGF.
-
-// 2. More research into existing Go engines is required, before tackling the next tasks:
-
-// 3. The board will have internal SBN states for the board state, and internal SGFs for the game state.

@@ -11,7 +11,7 @@ I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.
 
 ## Project Infrastructure
 
-- **Go Engine Code:** Referencing [GNU Go](https://www.gnu.org/software/gnugo/gnugo_4.html#SEC39) and [KataGo](https://github.com/lightvector/KataGo/blob/master/cpp/README.md)
+- **Go Engine Code:** Referencing [GNU Go](https://www.gnu.org/software/gnugo/gnugo_4.html#SEC39), [KataGo](https://github.com/lightvector/KataGo/blob/master/cpp/README.md), and notably [LeelaZero](https://github.com/leela-zero)
 - **Architecture:** Server/Client (until [Go WASM](https://github.com/golang/go/issues/28631) supports [threads](https://caniuse.com/wasm-threads))
 - **Hosting:** [Railway](https://railway.app/)
 - **Framework:** None (saved by [the crowd](https://www.reddit.com/r/golang/comments/q3r8qo/do_you_guys_use_frameworks_with_go_for_backend/))
@@ -41,6 +41,7 @@ I hope to implement _self-play_ learning in this Go engine.
 - Learned some [Go Compiler Intrinsics](https://dave.cheney.net/2019/08/20/go-compiler-intrinsics) so I could do [Go bit math](https://pkg.go.dev/math/bits) faster.
 - Made [this](https://forums.online-go.com/t/is-there-ever-more-than-1-move-that-violates-positional-superko/53724) forum post about [Positional SuperKo](https://senseis.xmp.net/?PositionalVsSituationalSuperko#toc1) and snapshots of Go games.
 - Explored [rooklift/sgf](https://pkg.go.dev/github.com/rooklift/sgf) and [seehun/go-sgf](https://pkg.go.dev/seehuhn.de/go/sgf), and then drained a lot of time brainstorming a new SGF standard.
+- Watched [this](https://www.youtube.com/watch?v=x_nCOEMvmJI&list=PLmN0neTso3JzkiYiDcLzpKaIDNoEQwAUI) go-in-go programming series.
 
 ---
 
