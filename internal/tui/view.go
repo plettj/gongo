@@ -16,6 +16,9 @@ func (m Model) View() string {
 		s += fmt.Sprintf("%2d │", 19-y)
 		for x := 0; x < 19; x++ {
 			cell := " -"
+			if (x+3)%6 == 0 && (y+3)%6 == 0 {
+				cell = " +"
+			}
 			switch m.board[x+y*19] {
 			case 1:
 				cell = "⚫"
