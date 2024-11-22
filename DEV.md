@@ -67,6 +67,9 @@ Note that I'm not disabling the import organization, as despite how [annoying](h
 - Rules for [Ing's SST](https://www.cs.cmu.edu/~wjh/go/rules/KSS.html)
 - Rules for [New Zealand](https://go.org.nz/index.php/about-go/new-zealand-rules-of-go)
 - Resource for [Japanese vs Chinese](https://polgote.com/en/blog/go-rules-japanese-vs-chinese/) rules.
+- Reached out to [Karl Fogel](https://red-bean.com/people.html) from red-bean about SGF and he pointed me towards [Arno](mailto:ahollosi@xmp.net).
+- I should create an [XML](https://www.w3schools.com/xml/) definition for GGN and SGN.
+- I should create an [ANTLR](https://github.com/antlr/grammars-v4/blob/master/pgn/PGN.g4) standard for GGN and SGN.
 
 ### Longer-term To-dos
 

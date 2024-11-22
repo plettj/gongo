@@ -40,6 +40,7 @@ I hope to implement _self-play_ learning in this Go engine.
 - Dove into [SGF](https://red-bean.com/sgf/index.html) (specifically, [Go SGF](https://red-bean.com/sgf/go.html)) to write my own parser and converter. Examples [here](https://red-bean.com/sgf/examples/).
 - Learned some [Go Compiler Intrinsics](https://dave.cheney.net/2019/08/20/go-compiler-intrinsics) so I could do [Go bit math](https://pkg.go.dev/math/bits) faster.
 - Made [this](https://forums.online-go.com/t/is-there-ever-more-than-1-move-that-violates-positional-superko/53724) forum post about [Positional SuperKo](https://senseis.xmp.net/?PositionalVsSituationalSuperko#toc1) and snapshots of Go games.
+- Explored [rooklift/sgf](https://pkg.go.dev/github.com/rooklift/sgf) and [seehun/go-sgf](https://pkg.go.dev/seehuhn.de/go/sgf), and then drained a lot of time brainstorming a new SGF standard.
 
 ---
 

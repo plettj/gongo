@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"gongo/internal/board"
+	"gongo/internal/sgf"
 	"gongo/internal/tui"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -12,10 +12,10 @@ import (
 
 func main() {
 
-	sgf := board.FileToString("_files/sgf/40799184-110-plettj-gucci_gang.sgf")
-	sgf = board.ParseSgf(sgf)
+	val := sgf.FileToString("_files/sgf/40799184-110-plettj-gucci_gang.sgf")
+	val = sgf.ParseSgf(val)
 
-	fmt.Println(sgf)
+	fmt.Println(val)
 
 	if false {
 		p := tea.NewProgram(tui.InitialModel())
