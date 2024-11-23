@@ -1,3 +1,8 @@
+/*
+Gongo's fully custom url-safe hashed Snowflake ID generation module.
+
+Generates short (only 8 characters!) collision-avoidant Snowflake IDs.
+*/
 package utils
 
 import (
@@ -8,8 +13,6 @@ import (
 
 	"gongo/internal/config"
 )
-
-// Gongo's fully custom url-safe hashed Snowflake ID generation module.
 
 // Generate a Gongo Snowflake ID
 func GetSnowflake() string {
@@ -38,10 +41,12 @@ func rotate48bit(snowflake int64) int64 {
 	for i := 0; i < 6; i++ {
 		g := (snowflake >> (i * 8)) & 0xFF
 		var expanded int64
+
 		for j := 0; j < 8; j++ {
 			bit := (g >> j) & 1
 			expanded |= int64(bit) << (j * 6)
 		}
+
 		reordered |= expanded << i
 	}
 
@@ -51,8 +56,10 @@ func rotate48bit(snowflake int64) int64 {
 // Encodes the 48-bit ID in a URL-safe Base64 format
 func encode48bitToUrl(id int64) string {
 	bytes := make([]byte, 6)
+
 	for i := 0; i < 6; i++ {
 		bytes[i] = byte(id >> uint(40-i*8))
 	}
+
 	return base64.URLEncoding.EncodeToString(bytes)
 }

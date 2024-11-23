@@ -80,12 +80,14 @@ func (b *Board) UnsetMark(l Loc) {
 // Get unmarked values adjacent to a location.
 func (b *Board) GetUnmarkedAdjacent(l Loc) []uint8 {
 	adjs := []uint8{}
+
 	for _, v := range l.Adjacent() {
 		stone := b.GetAndMarkStone(v)
 		if stone&MARK == 0 {
 			adjs = append(adjs, stone)
 		}
 	}
+
 	return adjs
 }
 
@@ -106,8 +108,11 @@ func (b *Board) MakeMove(l Loc) bool {
 	// Great reference point is this python implementation: https://github.com/maksimKorzh/wally/blob/main/wally.py
 
 	// 0. Compute if this move is a suicide move. (boolean "suicide")
+	group := b.GetGroup(l)
+	suicide := len(group.Liberties) == 0
 
 	// 1. Compute if any stones are being captured. If so, remove that chain. If not and "suicide" is true, return false. https://qr.ae/p2EkE1
+	// TODO: Continue on from here!
 
 	// 1.a. If we get here and "suicide" is true, set the KO value.
 
@@ -127,12 +132,14 @@ func (b *Board) GetGroup(l Loc) Group {
 	// Flood-fill exploration for efficient grouping
 	active := []Loc{l}
 	newActive := []Loc{}
+
 	for len(active) > 0 {
-		newActive = newActive[:0]
+		newActive = newActive[:0] // Reuse to prevent additional allocations
+
 		for _, v := range active {
 			adjLocs := l.Adjacent()
-			adjs := b.GetUnmarkedAdjacent(v)
-			for i, stone := range adjs {
+
+			for i, stone := range b.GetUnmarkedAdjacent(v) {
 				s := stone & 0b11
 				switch {
 				case s == EMPTY:
@@ -144,6 +151,7 @@ func (b *Board) GetGroup(l Loc) Group {
 				}
 			}
 		}
+
 		active = newActive
 	}
 
@@ -152,8 +160,10 @@ func (b *Board) GetGroup(l Loc) Group {
 
 func (b *Board) GetMoves() [361]bool {
 	var moves [361]bool
+
 	for i := range b.board {
 		moves[i] = b.board[i]&0b11 == 0
 	}
+
 	return moves
 }
