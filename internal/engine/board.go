@@ -3,8 +3,8 @@ Fast board implementation for Go games.
 
 Unsure of the best way. Below are my options.
 - [361]uint8s (current)
-- [19][19]uint8s
-- 3 [19]uint32s
+- [19][19]uint8s (presumably no difference)
+- 3 [19]uint32s (fast since it's all bitwise)
 */
 
 package engine
@@ -24,6 +24,15 @@ const (
 
 func opponent(color uint8) uint8 {
 	return 3 - color
+}
+
+// Fast internal Go board representation.
+type Board struct {
+	Size  uint8
+	Board [441]uint8 // 19*19 array with 1 padding to represent the edge.
+	Turn  uint8
+	// TODO: Consider storing the chains and liberties in the board.
+	// TODO: Consider storing a pointer to a scoring object.
 }
 
 // Individual board location.
@@ -52,24 +61,15 @@ type Group struct {
 	Liberties []Loc
 }
 
-// Fast internal Go board representation.
-type Board struct {
-	size  uint8
-	board [441]uint8 // 19*19 array with 1 padding to represent the edge.
-	turn  uint8
-	// TODO: Consider storing the chains and liberties in the board.
-	// TODO: Consider storing a pointer to a scoring object.
-}
-
 func NewBoard(size uint8) *Board {
-	board := Board{size: size}
+	board := Board{Size: size, Turn: BLACK}
 	len := int(size)
 
-	for i := range board.board {
+	for i := range board.Board {
 		if i < len || i%len == 0 || i%len == len-1 || i > len*len-len {
-			board.board[i] = EDGE
+			board.Board[i] = EDGE
 		} else {
-			board.board[i] = EMPTY
+			board.Board[i] = EMPTY
 		}
 	}
 
@@ -77,24 +77,24 @@ func NewBoard(size uint8) *Board {
 }
 
 func (b *Board) GetStone(l Loc) uint8 {
-	return b.board[l.X+l.Y*b.size]
+	return b.Board[l.X+l.Y*b.Size]
 }
 
 // Get stone value then mark it.
 func (b *Board) GetAndMarkStone(l Loc) uint8 {
-	stone := b.board[l.X+l.Y*b.size]
+	stone := b.Board[l.X+l.Y*b.Size]
 	b.SetMark(l)
 	return stone
 }
 
 // Sets the MARK value of a location.
 func (b *Board) SetMark(l Loc) {
-	b.board[l.X+l.Y*b.size] |= MARK
+	b.Board[l.X+l.Y*b.Size] |= MARK
 }
 
 // Clears the MARK value of a location.
 func (b *Board) UnsetMark(l Loc) {
-	b.board[l.X+l.Y*b.size] &= ^MARK
+	b.Board[l.X+l.Y*b.Size] &= ^MARK
 }
 
 // Get unmarked values adjacent to a location.
@@ -112,20 +112,20 @@ func (b *Board) GetUnmarkedAdjacent(l Loc) []uint8 {
 }
 
 func (b *Board) SetStone(l Loc, color uint8) {
-	b.board[l.X+l.Y*b.size] = color
+	b.Board[l.X+l.Y*b.Size] = color
 }
 
 func (b *Board) UnsetStone(l Loc) {
-	b.board[l.X+l.Y*b.size] = 0
+	b.Board[l.X+l.Y*b.Size] = 0
 }
 
 func (b *Board) MakeMove(l Loc) bool {
 	if b.GetStone(l) != 0 {
-		return false // Cannot place a stone on top of another stone.
+		return false // Cannot place a stone on top of another stone
 	}
 
 	// Simulate the move (needs to later be undone)
-	b.SetStone(l, b.turn)
+	b.SetStone(l, b.Turn)
 
 	group := b.GetGroup(l, true)
 	suicide := len(group.Liberties) == 0
@@ -133,24 +133,25 @@ func (b *Board) MakeMove(l Loc) bool {
 	if suicide && len(group.Stones) > 1 {
 		// FIXME: Dependent on ruleset. https://qr.ae/p2EkE1
 		b.UnsetStone(l)
-		return false // Cannot play a multi-stone suicide.
+		return false // Cannot play a multi-stone suicide
 	}
 
 	adjs := l.Adjacent()
 	deadGroups := []Group{}
-	opp := opponent(b.turn)
+	opp := opponent(b.Turn)
 
 	toUnmark := []Loc{}
 
 	for _, v := range adjs {
 		stone := b.GetStone(v)
 		isOpp := stone&COLOR_MASK == opp
-		isMarked := stone&MARK == MARK // For preventing duplicated groups
+		isMarked := stone&MARK == MARK
 
 		if !isOpp || isMarked {
-			break
+			continue // Not a new group
 		}
 
+		// Leave group stones marked for preventing duplicated groups
 		group := b.GetGroup(v, false)
 
 		toUnmark = append(toUnmark, group.Stones...)
@@ -185,7 +186,7 @@ func (b *Board) MakeMove(l Loc) bool {
 // Pre: There must be a stone at `l`.
 func (b *Board) GetGroup(l Loc, unmark bool) Group {
 	c := b.GetStone(l)
-	g := Group{Color: c}
+	g := Group{Color: c & COLOR_MASK}
 
 	// Flood-fill exploration for efficient grouping
 	active := []Loc{l}
@@ -202,7 +203,7 @@ func (b *Board) GetGroup(l Loc, unmark bool) Group {
 				switch {
 				case s == EMPTY:
 					g.Liberties = append(g.Liberties, adjLocs[i])
-				case s == c:
+				case s == c&COLOR_MASK:
 					g.Stones = append(g.Stones, adjLocs[i])
 				case s != EDGE:
 					newActive = append(newActive, adjLocs[i])

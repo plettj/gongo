@@ -2,12 +2,11 @@ package tui
 
 import (
 	"fmt"
-	"strconv"
 )
 
 func (m Model) View() string {
 	turn := "Black"
-	if m.turn == 2 {
+	if m.Game.Turn == 2 {
 		turn = "White"
 	}
 	s := fmt.Sprintf("\nGongo Terminal Player 1.1\n\n%s's turn to place a stone.\n\n", turn)
@@ -22,13 +21,13 @@ func (m Model) View() string {
 			if (x+3)%6 == 0 && (y+3)%6 == 0 {
 				cell = " +"
 			}
-			switch m.board[x+y*19] {
+			switch m.Game.Board[x+y*19] {
 			case 1:
 				cell = "⚫"
 			case 2:
 				cell = "⚪"
 			}
-			if uint8(x) == m.cursor[0] && uint8(y) == m.cursor[1] {
+			if uint8(x) == m.Cursor[0] && uint8(y) == m.Cursor[1] {
 				if turn == "Black" {
 					cell = "◾" // or ⬛?
 				} else {
@@ -40,8 +39,6 @@ func (m Model) View() string {
 		s += " │\n"
 	}
 	s += "   └───────────────────────────────────────┘\n"
-	s += "Cursor: X: " + strconv.Itoa(int(m.cursor[0])) + ", Y: " + strconv.Itoa(int(m.cursor[1])) + "\n"
-	s += "Cursor Loc: " + strconv.Itoa(int(m.cursor[0]+m.cursor[1]*19)) + "\n"
 
 	s += "\nPress q to quit.\n"
 

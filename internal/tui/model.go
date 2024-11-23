@@ -1,19 +1,23 @@
 package tui
 
+type Game struct {
+	Board [19 * 19]uint8 // 0 is empty, 1 is black, 2 is white
+	Moves [][2]uint8     // List of moves made
+	Turn  uint8
+}
+
 type Model struct {
-	board  [19 * 19]uint8 // 0 is empty, 1 is black, 2 is white
-	cursor [2]uint8       // Which cell is currently selected
-	moves  [][2]uint8     // List of moves made
-	turn   uint8          // 1 is black, 2 is white
+	Game   Game
+	Cursor [2]uint8 // Which cell is currently selected
 }
 
 func (m Model) CursorCell() uint16 {
-	return uint16(m.cursor[0]) + uint16(m.cursor[1])*19
+	return uint16(m.Cursor[0]) + uint16(m.Cursor[1])*19
 }
 
 func InitialModel() Model {
 	return Model{
-		board: [19 * 19]uint8{
+		Game: Game{Board: [19 * 19]uint8{
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -34,8 +38,9 @@ func InitialModel() Model {
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		},
-		cursor: [2]uint8{9, 9},
-		moves:  [][2]uint8{},
-		turn:   1,
+			Moves: [][2]uint8{},
+			Turn:  1,
+		},
+		Cursor: [2]uint8{9, 9},
 	}
 }
