@@ -9,6 +9,11 @@ Unsure of the best way. Below are my options.
 
 package engine
 
+import (
+	"math/rand"
+	"time"
+)
+
 const (
 	EMPTY uint8 = 0
 	BLACK uint8 = 1
@@ -227,4 +232,21 @@ func (b *Board) GetGroup(l Loc, unmark bool) Group {
 	}
 
 	return g
+}
+
+// A random move generator, to be used when I need a "working" computer player.
+func (b *Board) MakeRandomMove() bool {
+	rand.Seed(time.Now().UnixNano())
+
+	for tries := 0; tries < 1000; tries++ {
+		x := uint8(rand.Intn(int(b.Size)) + 1)
+		y := uint8(rand.Intn(int(b.Size)) + 1)
+		loc := Loc{X: x, Y: y}
+
+		if b.MakeMove(loc) {
+			return true
+		}
+	}
+
+	return false
 }

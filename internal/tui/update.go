@@ -33,6 +33,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			g := m.Game
 			if g.Board[m.CursorCell()] == 0 {
 				g.Moves = append(g.Moves, m.Cursor)
+				// TODO: Make this actually call "MakeMove" on the board!
 				g.Board[m.CursorCell()] = g.Turn
 				g.Turn = 3 - g.Turn
 

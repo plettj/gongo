@@ -5,5 +5,7 @@ File for expanded user interface actions like connecting to a board engine.
 package tui
 
 func (m *Model) PlayRandomMove() {
-	// TODO: Support playing a random move.
+	board := GameToBoard(&m.Game)
+	board.MakeRandomMove()
+	m.Game = *BoardToGame(board)
 }

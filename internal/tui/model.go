@@ -1,5 +1,7 @@
 package tui
 
+// TODO: To decrease the total number of board representations in this repo,
+//       Redesign this to be also the serializable representation of the board.
 type Game struct {
 	Board [19 * 19]uint8 // 0 is empty, 1 is black, 2 is white
 	Moves [][2]uint8     // List of moves made
