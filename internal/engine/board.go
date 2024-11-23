@@ -7,8 +7,9 @@ Unsure of the best way. Below are my options.
 - 3 [19]uint32s
 */
 
-package board
+package engine
 
+// Fast internal Go board representation.
 type Board struct {
 	size  uint8
 	board [361]uint8 // 0 = empty, 1 = black, 2 = white, 3 = ko

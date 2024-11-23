@@ -25,7 +25,7 @@ func (m Model) View() string {
 			case 2:
 				cell = "⚪"
 			}
-			if x == m.cursor[0] && y == m.cursor[1] {
+			if uint8(x) == m.cursor[0] && uint8(y) == m.cursor[1] {
 				if turn == "Black" {
 					cell = "◾" // or ⬛?
 				} else {
