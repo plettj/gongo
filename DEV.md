@@ -65,14 +65,16 @@ Note that I'm not disabling the import organization, as despite how [annoying](h
 - Rules for [Baduk](http://english.baduk.or.kr/sub02_02.htm)
 - Rules for [Ing's SST](https://www.cs.cmu.edu/~wjh/go/rules/KSS.html)
 - Rules for [New Zealand](https://go.org.nz/index.php/about-go/new-zealand-rules-of-go)
+- Rules for [Tromp-Taylor](https://senseis.xmp.net/?TrompTaylorRules)
 - Resource for [Japanese vs Chinese](https://polgote.com/en/blog/go-rules-japanese-vs-chinese/) rules.
 - Reached out to [Karl Fogel](https://red-bean.com/people.html) from red-bean about SGF and he pointed me towards [Arno](mailto:ahollosi@xmp.net).
 - // I should create an [XML](https://www.w3schools.com/xml/) definition for GGN and SGN.
 - // I should create an [ANTLR](https://github.com/antlr/grammars-v4/blob/master/pgn/PGN.g4) standard for GGN and SGN.
 - Programming the scoring logic: [thread](https://www.reddit.com/r/cbaduk/comments/15tsaxj/comment/jwn5kku/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button).
+- Great simple Go AI reference code base: [wally](https://github.com/maksimKorzh/wally/blob/main/wally.py)
 
 ### Longer-term To-dos
 
 - Make my custom-written snowflake generator a public go package.
 - Create example `.ggn` and `.sgn` files.
-- Define on a `.md` file the exact specification of games my online player will be capable of.
+- Define on a `.md` file the exact specification of game rulesets my online player will be capable of.

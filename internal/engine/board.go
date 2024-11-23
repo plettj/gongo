@@ -18,6 +18,14 @@ const (
 	// TODO: Consider a representation for the Ko square.
 )
 
+const (
+	COLOR_MASK uint8 = 0b11
+)
+
+func opponent(color uint8) uint8 {
+	return 3 - color
+}
+
 // Individual board location.
 type Loc struct {
 	X, Y uint8
@@ -47,13 +55,25 @@ type Group struct {
 // Fast internal Go board representation.
 type Board struct {
 	size  uint8
-	board [441]uint8
+	board [441]uint8 // 19*19 array with 1 padding of EDGE.
 	turn  uint8
 	// TODO: Consider storing the chains and liberties in the board.
+	// TODO: Consider storing a pointer to a scoring object.
 }
 
 func NewBoard(size uint8) *Board {
-	return &Board{size: size}
+	board := Board{size: size}
+	len := int(size)
+
+	for i := range board.board {
+		if i < len || i%len == 0 || i%len == len-1 || i > len*len-len {
+			board.board[i] = EDGE
+		} else {
+			board.board[i] = EMPTY
+		}
+	}
+
+	return &board
 }
 
 func (b *Board) GetStone(l Loc) uint8 {
@@ -95,37 +115,75 @@ func (b *Board) SetStone(l Loc, color uint8) {
 	b.board[l.X+l.Y*b.size] = color
 }
 
-func (b *Board) RemoveStone(l Loc) {
+func (b *Board) UnsetStone(l Loc) {
 	b.board[l.X+l.Y*b.size] = 0
 }
 
 func (b *Board) MakeMove(l Loc) bool {
 	if b.GetStone(l) != 0 {
-		return false
+		return false // Cannot place a stone on top of another stone.
 	}
 
-	// IT APPEARS I'VE DISCOVERED THE FIRST MAJOR CHALLENGE OF THIS PROJECT: PROGRAMMING MOVE PLACEMENT (aka "rules").
-	// Great reference point is this python implementation: https://github.com/maksimKorzh/wally/blob/main/wally.py
+	// Simulate the move (needs to later be undone)
+	b.SetStone(l, b.turn)
 
-	// 0. Compute if this move is a suicide move. (boolean "suicide")
-	group := b.GetGroup(l)
+	group := b.GetGroup(l, true)
 	suicide := len(group.Liberties) == 0
 
-	// 1. Compute if any stones are being captured. If so, remove that chain. If not and "suicide" is true, return false. https://qr.ae/p2EkE1
-	// TODO: Continue on from here!
+	if suicide && len(group.Stones) > 1 {
+		// FIXME: Dependent on ruleset. https://qr.ae/p2EkE1
+		b.UnsetStone(l)
+		return false // Cannot play a multi-stone suicide.
+	}
 
-	// 1.a. If we get here and "suicide" is true, set the KO value.
+	adjs := l.Adjacent()
+	deadGroups := []Group{}
+	opp := opponent(b.turn)
 
-	// 2. Place the stone.
+	toUnmark := []Loc{}
 
-	b.SetStone(Loc{X: l.X, Y: l.Y}, b.turn)
+	for _, v := range adjs {
+		stone := b.GetStone(v)
+		isOpp := stone&COLOR_MASK == opp
+		isMarked := stone&MARK == MARK // For preventing duplicated groups
+
+		if !isOpp || isMarked {
+			break
+		}
+
+		group := b.GetGroup(v, false)
+
+		toUnmark = append(toUnmark, group.Stones...)
+
+		if len(group.Liberties) == 0 {
+			deadGroups = append(deadGroups, group)
+		}
+	}
+
+	for _, v := range toUnmark {
+		b.UnsetMark(v)
+	}
+
+	if suicide && len(deadGroups) == 0 {
+		// FIXME: Dependent on ruleset. https://qr.ae/p2EkE1
+		b.UnsetStone(l)
+		return false // Cannot play self-atari if no groups are being killed.
+	}
+
+	// At this point, the move is verified to be legal.
+
+	for _, g := range deadGroups {
+		for _, location := range g.Stones {
+			b.UnsetStone(location)
+		}
+	}
 
 	return true
 }
 
 // Traverse across a group of like locations.
 // Pre: There must be a stone at `l`.
-func (b *Board) GetGroup(l Loc) Group {
+func (b *Board) GetGroup(l Loc, unmark bool) Group {
 	c := b.GetStone(l)
 	g := Group{Color: c}
 
@@ -134,13 +192,13 @@ func (b *Board) GetGroup(l Loc) Group {
 	newActive := []Loc{}
 
 	for len(active) > 0 {
-		newActive = newActive[:0] // Reuse to prevent additional allocations
+		newActive = newActive[:0]
 
 		for _, v := range active {
 			adjLocs := l.Adjacent()
 
 			for i, stone := range b.GetUnmarkedAdjacent(v) {
-				s := stone & 0b11
+				s := stone & COLOR_MASK
 				switch {
 				case s == EMPTY:
 					g.Liberties = append(g.Liberties, adjLocs[i])
@@ -155,6 +213,18 @@ func (b *Board) GetGroup(l Loc) Group {
 		active = newActive
 	}
 
+	// Conditionally unmark stones
+	if unmark {
+		for _, v := range g.Stones {
+			b.UnsetMark(v)
+		}
+	}
+
+	// Always unmark liberties
+	for _, v := range g.Liberties {
+		b.UnsetMark(v)
+	}
+
 	return g
 }
 
@@ -162,7 +232,7 @@ func (b *Board) GetMoves() [361]bool {
 	var moves [361]bool
 
 	for i := range b.board {
-		moves[i] = b.board[i]&0b11 == 0
+		moves[i] = b.board[i]&COLOR_MASK == 0
 	}
 
 	return moves
