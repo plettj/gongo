@@ -55,7 +55,7 @@ type Group struct {
 // Fast internal Go board representation.
 type Board struct {
 	size  uint8
-	board [441]uint8 // 19*19 array with 1 padding of EDGE.
+	board [441]uint8 // 19*19 array with 1 padding to represent the edge.
 	turn  uint8
 	// TODO: Consider storing the chains and liberties in the board.
 	// TODO: Consider storing a pointer to a scoring object.
@@ -83,7 +83,7 @@ func (b *Board) GetStone(l Loc) uint8 {
 // Get stone value then mark it.
 func (b *Board) GetAndMarkStone(l Loc) uint8 {
 	stone := b.board[l.X+l.Y*b.size]
-	b.board[l.X+l.Y*b.size] |= MARK
+	b.SetMark(l)
 	return stone
 }
 
@@ -226,14 +226,4 @@ func (b *Board) GetGroup(l Loc, unmark bool) Group {
 	}
 
 	return g
-}
-
-func (b *Board) GetMoves() [361]bool {
-	var moves [361]bool
-
-	for i := range b.board {
-		moves[i] = b.board[i]&COLOR_MASK == 0
-	}
-
-	return moves
 }

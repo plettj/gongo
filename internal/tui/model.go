@@ -7,6 +7,10 @@ type Model struct {
 	turn   uint8          // 1 is black, 2 is white
 }
 
+func (m Model) CursorCell() uint16 {
+	return uint16(m.cursor[0]) + uint16(m.cursor[1])*19
+}
+
 func InitialModel() Model {
 	return Model{
 		board: [19 * 19]uint8{

@@ -1,6 +1,9 @@
 package tui
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 func (m Model) View() string {
 	turn := "Black"
@@ -37,6 +40,8 @@ func (m Model) View() string {
 		s += " │\n"
 	}
 	s += "   └───────────────────────────────────────┘\n"
+	s += "Cursor: X: " + strconv.Itoa(int(m.cursor[0])) + ", Y: " + strconv.Itoa(int(m.cursor[1])) + "\n"
+	s += "Cursor Loc: " + strconv.Itoa(int(m.cursor[0]+m.cursor[1]*19)) + "\n"
 
 	s += "\nPress q to quit.\n"
 

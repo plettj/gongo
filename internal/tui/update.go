@@ -30,19 +30,19 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.cursor[0]++
 			}
 		case "enter", " ":
-			if m.board[m.cursor[0]+m.cursor[1]*19] == 0 {
+			if m.board[m.CursorCell()] == 0 {
 				m.moves = append(m.moves, m.cursor)
-				m.board[m.cursor[0]+m.cursor[1]*19] = m.turn
+				m.board[m.CursorCell()] = m.turn
 				m.turn = 3 - m.turn
 
 				// TODO: Refactor this when I re-implement the Update function
-				if m.cursor[1] < 19-1 && m.board[m.cursor[0]+(m.cursor[1]+1)*19] == 0 {
+				if m.cursor[1] < 19-1 {
 					m.cursor[1]++
-				} else if m.cursor[1] > 0 && m.board[m.cursor[0]+(m.cursor[1]-1)*19] == 0 {
+				} else if m.cursor[1] > 0 {
 					m.cursor[1]--
-				} else if m.cursor[0] < 19-1 && m.board[(m.cursor[0]+1)+m.cursor[1]*19] == 0 {
+				} else if m.cursor[0] < 19-1 {
 					m.cursor[0]++
-				} else if m.cursor[0] > 0 && m.board[(m.cursor[0]-1)+m.cursor[1]*19] == 0 {
+				} else if m.cursor[0] > 0 {
 					m.cursor[0]--
 				}
 			}
