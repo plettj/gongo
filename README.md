@@ -43,6 +43,7 @@ I hope to implement _self-play_ learning in this Go engine.
 - Explored [rooklift/sgf](https://pkg.go.dev/github.com/rooklift/sgf) and [seehun/go-sgf](https://pkg.go.dev/seehuhn.de/go/sgf), and then drained a lot of time brainstorming a new SGF standard.
 - Watched [this](https://www.youtube.com/watch?v=x_nCOEMvmJI&list=PLmN0neTso3JzkiYiDcLzpKaIDNoEQwAUI) go-in-go programming series.
 - Learned the [Flood Fill](https://en.wikipedia.org/wiki/Flood_fill) algorithm actually has a name.
+- Learned the specifics of [function inlining](https://go.dev/wiki/CompilerOptimizations?utm_source=chatgpt.com#function-inlining) to optimize speed.
 
 ---
 

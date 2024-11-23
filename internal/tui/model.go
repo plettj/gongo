@@ -11,12 +11,12 @@ type Model struct {
 	Cursor [2]uint8 // Which cell is currently selected
 }
 
-func (m Model) CursorCell() uint16 {
+func (m *Model) CursorCell() uint16 {
 	return uint16(m.Cursor[0]) + uint16(m.Cursor[1])*19
 }
 
-func InitialModel() Model {
-	return Model{
+func NewModel() *Model {
+	model := Model{
 		Game: Game{Board: [19 * 19]uint8{
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -43,4 +43,6 @@ func InitialModel() Model {
 		},
 		Cursor: [2]uint8{9, 9},
 	}
+
+	return &model
 }

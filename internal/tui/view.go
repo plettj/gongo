@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func (m Model) View() string {
+func (m *Model) View() string {
 	turn := "Black"
 	if m.Game.Turn == 2 {
 		turn = "White"

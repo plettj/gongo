@@ -132,6 +132,8 @@ func (b *Board) MakeMove(l Loc) bool {
 
 	if suicide && len(group.Stones) > 1 {
 		// FIXME: Dependent on ruleset. https://qr.ae/p2EkE1
+
+		// TODO: Use `defer` to always unset / unmark, then modify usage. https://go.dev/doc/effective_go#defer
 		b.UnsetStone(l)
 		return false // Cannot play a multi-stone suicide
 	}
@@ -170,8 +172,6 @@ func (b *Board) MakeMove(l Loc) bool {
 		b.UnsetStone(l)
 		return false // Cannot play self-atari if no groups are being killed.
 	}
-
-	// At this point, the move is verified to be legal.
 
 	for _, g := range deadGroups {
 		for _, location := range g.Stones {
