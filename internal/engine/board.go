@@ -18,17 +18,24 @@ const (
 	// TODO: Consider a representation for the Ko square.
 )
 
-// Fast internal Go board representation.
-type Board struct {
-	size  uint8
-	board [441]uint8
-	turn  uint8
-	// TODO: Consider storing the chains and liberties in the board.
-}
-
 // Individual board location.
 type Loc struct {
 	X, Y uint8
+}
+
+// Get values adjacent to a location.
+// Return: [N, E, S, W]
+func (l *Loc) Adjacent() [4]Loc {
+	return [4]Loc{
+		{l.X, l.Y - 1},
+		{l.X + 1, l.Y},
+		{l.X, l.Y + 1},
+		{l.X - 1, l.Y},
+	}
+}
+
+func (l *Loc) String() string {
+	return string('{' + l.X + ',' + l.Y + '}')
 }
 
 type Group struct {
@@ -37,8 +44,12 @@ type Group struct {
 	Liberties []Loc
 }
 
-func (l Loc) String() string {
-	return string('{' + l.X + ',' + l.Y + '}')
+// Fast internal Go board representation.
+type Board struct {
+	size  uint8
+	board [441]uint8
+	turn  uint8
+	// TODO: Consider storing the chains and liberties in the board.
 }
 
 func NewBoard(size uint8) *Board {
@@ -49,20 +60,33 @@ func (b *Board) GetStone(l Loc) uint8 {
 	return b.board[l.X+l.Y*b.size]
 }
 
-// Get values adjacent to a location.
-// Return: [N, E, S, W]
-func (b *Board) GetAdjacent(l Loc) [4]uint8 {
-	return [4]uint8{
-		b.GetStone(Loc{X: l.X, Y: l.Y - 1}),
-		b.GetStone(Loc{X: l.X + 1, Y: l.Y}),
-		b.GetStone(Loc{X: l.X, Y: l.Y + 1}),
-		b.GetStone(Loc{X: l.X - 1, Y: l.Y}),
-	}
+// Get stone value then mark it.
+func (b *Board) GetAndMarkStone(l Loc) uint8 {
+	stone := b.board[l.X+l.Y*b.size]
+	b.board[l.X+l.Y*b.size] |= MARK
+	return stone
 }
 
-// Toggles the MARK value of a location.
-func (b *Board) MarkStone(l Loc) {
-	b.board[l.X+l.Y*b.size] ^= MARK
+// Sets the MARK value of a location.
+func (b *Board) SetMark(l Loc) {
+	b.board[l.X+l.Y*b.size] |= MARK
+}
+
+// Clears the MARK value of a location.
+func (b *Board) UnsetMark(l Loc) {
+	b.board[l.X+l.Y*b.size] &= ^MARK
+}
+
+// Get unmarked values adjacent to a location.
+func (b *Board) GetUnmarkedAdjacent(l Loc) []uint8 {
+	adjs := []uint8{}
+	for _, v := range l.Adjacent() {
+		stone := b.GetAndMarkStone(v)
+		if stone&MARK == 0 {
+			adjs = append(adjs, stone)
+		}
+	}
+	return adjs
 }
 
 func (b *Board) SetStone(l Loc, color uint8) {
@@ -102,17 +126,25 @@ func (b *Board) GetGroup(l Loc) Group {
 
 	// Flood-fill exploration for efficient grouping
 	active := []Loc{l}
+	newActive := []Loc{}
 	for len(active) > 0 {
-		newActive := []Loc{}
+		newActive = newActive[:0]
 		for _, v := range active {
-			// TODO: Implement a version that only gets unmarked values
-			adjs := b.GetAdjacent(v)
-			for _, w := range adjs {
-				if w&MARK == MARK {
-					break
+			adjLocs := l.Adjacent()
+			adjs := b.GetUnmarkedAdjacent(v)
+			for i, stone := range adjs {
+				s := stone & 0b11
+				switch {
+				case s == EMPTY:
+					g.Liberties = append(g.Liberties, adjLocs[i])
+				case s == c:
+					g.Stones = append(g.Stones, adjLocs[i])
+				case s != EDGE:
+					newActive = append(newActive, adjLocs[i])
 				}
 			}
 		}
+		active = newActive
 	}
 
 	return g
