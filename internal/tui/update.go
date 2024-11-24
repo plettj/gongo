@@ -1,6 +1,8 @@
 package tui
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	tea "github.com/charmbracelet/bubbletea"
+)
 
 func (m *Model) Init() tea.Cmd {
 	return nil
@@ -10,6 +12,11 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
+		// FIXME: This is crazy but I'm not kidding. Right-clicking executes "a" "s" "s" in that order.
+		//        Update it's because right-clicking in a windows cmd is supposed to be "paste" which is a
+		//        serialized command, and essentially BubbleTea doesn't know how to handle that, so it
+		//        serializes the input into a `msg` (regrettably).
+		//        It was pure coincidence that the only three valid types that came through were "ass" ⚰️
 		switch msg.String() {
 		case "q", "esc", "ctrl+c":
 			return m, tea.Quit
@@ -56,7 +63,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.Cursor[1] = uint8(y)
 			}
 		case tea.MouseActionPress:
-			if 0 <= x && x < 19 && 0 <= y && y < 19 {
+			if tea.MouseEvent(msg).Button == tea.MouseButtonLeft && 0 <= x && x < 19 && 0 <= y && y < 19 {
 				m.PlayMove(m.Cursor[0], m.Cursor[1])
 			}
 		}

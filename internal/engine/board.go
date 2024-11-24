@@ -34,7 +34,7 @@ func opponent(color uint8) uint8 {
 // Fast internal Go board representation.
 type Board struct {
 	Size  uint8
-	Board [441]uint8 // 19*19 array with 1 padding to represent the edge.
+	Board [(19 + 2) * (19 + 2)]uint8 // 19*19 array with 1 padding to represent the edge.
 	Turn  uint8
 	// TODO: Consider storing the chains and liberties in the board.
 	// TODO: Consider storing a pointer to a scoring object.
@@ -58,7 +58,7 @@ func (l *Loc) Adjacent() [4]Loc {
 
 // Get index of Loc on a one-dimensional grid
 func (l *Loc) Linear(width uint8) uint16 {
-	return uint16(l.X) + uint16(l.Y)*uint16(width)
+	return uint16(l.X) + uint16(l.Y)*uint16(1+width+1)
 }
 
 func (l *Loc) String() string {
@@ -73,10 +73,10 @@ type Group struct {
 
 func NewBoard(size uint8) *Board {
 	board := Board{Size: size, Turn: BLACK}
-	len := int(size)
+	len := int(size + 2)
 
 	for i := range board.Board {
-		if i < len || i%len == 0 || i%len == len-1 || i > len*len-len {
+		if i < len || i%len == 0 || i%len == len-1 || i >= len*len-len {
 			board.Board[i] = EDGE
 		} else {
 			board.Board[i] = EMPTY

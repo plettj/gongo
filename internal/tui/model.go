@@ -53,5 +53,7 @@ func NewModel() *Model {
 		Offsets: [2]int{4, 7},
 	}
 
+	model.ClearBoard()
+
 	return &model
 }
