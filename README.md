@@ -1,19 +1,16 @@
-<div align="center" style="padding: 0px 50px"><img width="190px" src="_files/art/gongo-rounded.png" /></div>
+<div align="center"><img width="190px" src="_files/art/gongo-rounded.png" /></div>
 <div align="center" style="text-align: center; width: 100%">
 <h1>Gongo - The Go Go Engine</h1>
 </div>
 
-This repo is a server-side [Go](<https://en.wikipedia.org/wiki/Go_(game)>) (game) engine written in [Go](https://go.dev/) (language)
+This repo is a server-side [Go](<https://en.wikipedia.org/wiki/Go_(game)>) (game) engine written in [Go](https://go.dev/) (language).
 
 I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.com/) in the Go language, so I'll be documenting some of that learning here.
 
 ---
 
-<div align="center" style="padding: 0px 50px">
-<figure>
-  <img src="_files/gallery/tui-1.4.png" alt="Gongo tui v1.4 13x13 showcase">
-  <figcaption><i>Me and my v1.4 bot building the 13x13 Gongo logo.</i></figcaption>
-</figure>
+<div align="center">
+  <img width="340px" src="_files/gallery/tui-1.4.png" alt="Gongo tui v1.4 13x13 showcase">
 </div>
 
 ---
