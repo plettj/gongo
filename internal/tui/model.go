@@ -32,11 +32,13 @@ func NewModel(size int) *Model {
 			Moves: [][2]byte{},
 			Turn:  1,
 		},
-		Cursor:  [2]int{9, 9},
+		Cursor:  [2]int{size / 2, size / 2},
 		Offsets: [2]int{4, 7},
 	}
 
-	model.ClearBoard()
+	if size == 13 {
+		model.Game.Board = GONGO_13[:]
+	}
 
 	return &model
 }

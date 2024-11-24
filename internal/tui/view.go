@@ -46,7 +46,7 @@ func (m *Model) View() string {
 		titleStyle.Render("o tui"), // Wrapped in titleStyle due to undocumented lipgloss bug.
 	))
 
-	version := mutedStyle.Render(" - v1.3")
+	version := mutedStyle.Render(" - v1.4")
 
 	topText := fmt.Sprintf("\n%s%s\n\n%s's turn.\n\n", title, version, emphasizedStyle.Render(turn))
 
