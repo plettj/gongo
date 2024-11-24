@@ -41,19 +41,19 @@ func (m *Model) View() string {
 
 			if x == 0 && y == 0 {
 				cell = " ┌─"
-			} else if x == 0 && y == 18 {
+			} else if x == 0 && y == 19-1 {
 				cell = " └─"
-			} else if x == 18 && y == 0 {
+			} else if x == 19-1 && y == 0 {
 				cell = "─┐ "
-			} else if x == 18 && y == 18 {
+			} else if x == 19-1 && y == 19-1 {
 				cell = "─┘ "
 			} else if x == 0 {
 				cell = " ├─"
-			} else if x == 18 {
+			} else if x == 19-1 {
 				cell = "─┤ "
 			} else if y == 0 {
 				cell = "─┬─"
-			} else if y == 18 {
+			} else if y == 19-1 {
 				cell = "─┴─"
 			}
 
@@ -61,11 +61,18 @@ func (m *Model) View() string {
 				cell = "─┿─"
 			}
 
-			switch m.Game.Board[x+y*19] {
-			case 1:
-				cell = "⚫╶"
-			case 2:
-				cell = "⚪╶"
+			if m.Game.Board[x+y*19] != 0 {
+				switch m.Game.Board[x+y*19] {
+				case 1:
+					cell = "⚫"
+				case 2:
+					cell = "⚪"
+				}
+				if x < 19-1 {
+					cell += "╶"
+				} else {
+					cell += " "
+				}
 			}
 
 			cell = mutedStyle.Render(cell)
