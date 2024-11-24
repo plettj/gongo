@@ -18,9 +18,8 @@ const (
 	EMPTY byte = 0
 	BLACK byte = 1
 	WHITE byte = 2
-	EDGE  byte = 3 // Edge of the board.
 	MARK  byte = 4 // Marked by our exploration algorithm.
-	// TODO: Consider a representation for the Ko square.
+	EDGE  byte = 7 // Edge of the board (always marked).
 )
 
 const (
@@ -36,8 +35,10 @@ type Board struct {
 	Size  byte
 	Board [(19 + 2) * (19 + 2)]byte // 19*19 array with 1 padding to represent the edge.
 	Turn  byte
+	// TODO: Consider a representation for the Ko square.
 	// TODO: Consider storing the chains and liberties in the board.
 	// TODO: Consider storing a pointer to a scoring object.
+	// TODO: Zobrist hashes.
 }
 
 // Individual board location.
@@ -136,60 +137,60 @@ func (b *Board) MakeMove(l Loc) bool {
 
 	// Simulate the move (needs to later be undone)
 	b.SetStone(l, b.Turn)
-
-	group := b.GetGroup(l, true)
-	suicide := len(group.Liberties) == 0
-
-	if suicide && len(group.Stones) > 1 {
-		// FIXME: Dependent on ruleset. https://qr.ae/p2EkE1
-
-		// TODO: Use `defer` to always unset / unmark, then modify usage. https://go.dev/doc/effective_go#defer
-		b.UnsetStone(l)
-		return false // Cannot play a multi-stone suicide
-	}
-
-	adjs := l.Adjacent()
-	deadGroups := []Group{}
 	opp := opponent(b.Turn)
 
-	toUnmark := []Loc{}
+	/*
+		group := b.GetGroup(l, true)
+		suicide := len(group.Liberties) == 0
 
-	for _, v := range adjs {
-		stone := b.GetStone(v)
-		isOpp := stone&COLOR_MASK == opp
-		isMarked := stone&MARK == MARK
+		if suicide && len(group.Stones) > 1 {
+			// FIXME: Dependent on ruleset. https://qr.ae/p2EkE1
 
-		if !isOpp || isMarked {
-			continue // Not a new group
+			// TODO: Use `defer` to always unset / unmark, then modify usage. https://go.dev/doc/effective_go#defer
+			b.UnsetStone(l)
+			return false // Cannot play a multi-stone suicide
 		}
 
-		// Leave group stones marked for preventing duplicated groups
-		group := b.GetGroup(v, false)
+		adjs := l.Adjacent()
+		deadGroups := []Group{}
+		toUnmark := []Loc{}
 
-		toUnmark = append(toUnmark, group.Stones...)
+		for _, v := range adjs {
+			stone := b.GetStone(v)
+			isOpp := stone&COLOR_MASK == opp
+			isMarked := stone&MARK == MARK
 
-		if len(group.Liberties) == 0 {
-			deadGroups = append(deadGroups, group)
+			if !isOpp || isMarked {
+				continue // Not a new group
+			}
+
+			// Leave group stones marked for preventing duplicated groups
+			group := b.GetGroup(v, false)
+
+			toUnmark = append(toUnmark, group.Stones...)
+
+			if len(group.Liberties) == 0 {
+				deadGroups = append(deadGroups, group)
+			}
 		}
-	}
 
-	for _, v := range toUnmark {
-		b.UnsetMark(v)
-	}
+		for _, v := range toUnmark {
+			b.UnsetMark(v)
+		}
 
-	if suicide && len(deadGroups) == 0 {
-		// FIXME: Dependent on ruleset. https://qr.ae/p2EkE1
-		b.UnsetStone(l)
-		return false // Cannot play self-atari if no groups are being killed.
-	}
+		if suicide && len(deadGroups) == 0 {
+			// FIXME: Dependent on ruleset. https://qr.ae/p2EkE1
+			b.UnsetStone(l)
+			return false // Cannot play self-atari if no groups are being killed
+		}
+
+		for _, g := range deadGroups {
+			for _, location := range g.Stones {
+				b.UnsetStone(location)
+			}
+		}*/
 
 	b.Turn = opp
-
-	for _, g := range deadGroups {
-		for _, location := range g.Stones {
-			b.UnsetStone(location)
-		}
-	}
 
 	return true
 }

@@ -76,7 +76,7 @@ func (m *Model) View() string {
 			}
 
 			cell = mutedStyle.Render(cell)
-			if byte(x) == m.Cursor[0] && byte(y) == m.Cursor[1] {
+			if x == m.Cursor[0] && y == m.Cursor[1] {
 				cell = selectedCellStyle.Render(cell)
 			}
 

@@ -9,6 +9,7 @@ func (m *Model) Init() tea.Cmd {
 }
 
 func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	size := m.Game.Size
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
@@ -25,7 +26,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.Cursor[1]--
 			}
 		case "down", "s":
-			if m.Cursor[1] < 19-1 {
+			if m.Cursor[1] < size-1 {
 				m.Cursor[1]++
 			}
 		case "left", "a":
@@ -33,7 +34,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.Cursor[0]--
 			}
 		case "right", "d":
-			if m.Cursor[0] < 19-1 {
+			if m.Cursor[0] < size-1 {
 				m.Cursor[0]++
 			}
 		case "r":
@@ -42,9 +43,9 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			played := m.PlayMove(m.Cursor[0], m.Cursor[1])
 
 			if played {
-				if m.Cursor[1] < 19-1 {
+				if m.Cursor[1] < size-1 {
 					m.Cursor[1]++
-				} else if m.Cursor[0] < 19-1 {
+				} else if m.Cursor[0] < size-1 {
 					m.Cursor[0]++
 				} else {
 					m.Cursor[1]--
@@ -58,12 +59,12 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		switch tea.MouseEvent(msg).Action {
 		case tea.MouseActionMotion:
-			if 0 <= x && x < 19 && 0 <= y && y < 19 {
-				m.Cursor[0] = byte(x)
-				m.Cursor[1] = byte(y)
+			if 0 <= x && x < size && 0 <= y && y < size {
+				m.Cursor[0] = x
+				m.Cursor[1] = y
 			}
 		case tea.MouseActionPress:
-			if tea.MouseEvent(msg).Button == tea.MouseButtonLeft && 0 <= x && x < 19 && 0 <= y && y < 19 {
+			if tea.MouseEvent(msg).Button == tea.MouseButtonLeft && 0 <= x && x < size && 0 <= y && y < size {
 				m.PlayMove(m.Cursor[0], m.Cursor[1])
 			}
 		}

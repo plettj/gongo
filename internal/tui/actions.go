@@ -6,19 +6,27 @@ package tui
 
 import "gongo/internal/engine"
 
-func (m *Model) PlayRandomMove() {
+func (m *Model) PlayRandomMove() bool {
 	board := GameToBoard(&m.Game)
-	board.MakeRandomMove()
-	m.Game = *BoardToGame(board)
+	played := board.MakeRandomMove()
+
+	if played {
+		m.Game = *BoardToGame(board)
+	}
+
+	return played
 }
 
 // Pre: 0 <= x < 19, 0 <= x < 19
-func (m *Model) PlayMove(x byte, y byte) bool {
+func (m *Model) PlayMove(x int, y int) bool {
 	board := GameToBoard(&m.Game)
-	legal := board.MakeMove(engine.Loc{X: x + 1, Y: y + 1})
+	legal := board.MakeMove(engine.Loc{X: byte(x + 1), Y: byte(y + 1)})
 
 	if legal {
 		m.Game = *BoardToGame(board)
+
+		// Bot plays move
+		m.PlayRandomMove()
 	}
 
 	return legal

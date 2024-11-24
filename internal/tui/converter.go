@@ -9,6 +9,7 @@ import (
 
 func BoardToGame(board *engine.Board) *Game {
 	game := Game{
+		Size:  int(board.Size),
 		Board: [19 * 19]byte{},
 		Turn:  board.Turn,
 	}
@@ -30,6 +31,7 @@ func BoardToGame(board *engine.Board) *Game {
 
 func GameToBoard(game *Game) *engine.Board {
 	board := engine.NewBoard(19)
+	board.Size = byte(game.Size)
 	board.Turn = game.Turn
 
 	// TODO: Once Zobrist hashes are implemented, use the tui.Game.Moves to initialize them.
