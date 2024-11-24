@@ -178,6 +178,8 @@ func (b *Board) MakeMove(l Loc) bool {
 		return false // Cannot play self-atari if no groups are being killed.
 	}
 
+	b.Turn = opp
+
 	for _, g := range deadGroups {
 		for _, location := range g.Stones {
 			b.UnsetStone(location)

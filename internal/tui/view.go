@@ -9,7 +9,7 @@ func (m *Model) View() string {
 	if m.Game.Turn == 2 {
 		turn = "White"
 	}
-	s := fmt.Sprintf("\nGongo Terminal Player 1.1\n\n%s's turn to place a stone.\n\n", turn)
+	s := fmt.Sprintf("\nGongo Terminal Player 1.2\n\n%s's turn.\n\n", turn)
 
 	// Render the board
 	s += "     A B C D E F G H J K L M N O P Q R S T\n"
@@ -40,7 +40,7 @@ func (m *Model) View() string {
 	}
 	s += "   └───────────────────────────────────────┘\n"
 
-	s += "\nPress q to quit.\n"
+	s += "\nPress r to restart. Press q to quit.\n"
 
 	return s
 }

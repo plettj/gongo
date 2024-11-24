@@ -13,13 +13,13 @@ func BoardToGame(board *engine.Board) *Game {
 		Turn:  board.Turn,
 	}
 
-	for i := 1; i < 19+1; i++ {
-		for j := 1; j < 19+1; j++ {
-			stone := board.GetStone(engine.Loc{X: uint8(i), Y: uint8(j)})
+	for i := 0; i < 19; i++ {
+		for j := 0; j < 19; j++ {
+			stone := board.GetStone(engine.Loc{X: uint8(i + 1), Y: uint8(j + 1)})
 			if stone&engine.COLOR_MASK == engine.BLACK {
-				game.Board[(i-1)+19*(j-1)] = 1
+				game.Board[i+19*j] = 1
 			} else if stone&engine.COLOR_MASK == engine.WHITE {
-				game.Board[(i-1)+19*(j-1)] = 2
+				game.Board[i+19*j] = 2
 			}
 		}
 	}
@@ -32,10 +32,10 @@ func GameToBoard(game *Game) *engine.Board {
 	board.Turn = game.Turn
 
 	// TODO: Once Zobrist hashes are implemented, use the tui.Game.Moves to initialize them.
-	for i := 1; i < 19+1; i++ {
-		for j := 1; j < 19+1; j++ {
-			cell := game.Board[(i-1)+19*(j-1)]
-			loc := engine.Loc{X: uint8(i), Y: uint8(j)}
+	for i := 0; i < 19; i++ {
+		for j := 0; j < 19; j++ {
+			cell := game.Board[i+19*j]
+			loc := engine.Loc{X: uint8(i + 1), Y: uint8(j + 1)}
 			if cell == 1 {
 				board.SetStone(loc, engine.BLACK)
 			} else if cell == 2 {

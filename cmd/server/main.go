@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	p := tea.NewProgram(tui.NewModel())
+	p := tea.NewProgram(tui.NewModel(), tea.WithAltScreen())
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("An error occurred while trying to show my new Go game player: %v", err)
 		os.Exit(1)
