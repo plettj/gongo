@@ -16,10 +16,11 @@ func BoardToGame(board *engine.Board) *Game {
 	for i := 0; i < 19; i++ {
 		for j := 0; j < 19; j++ {
 			stone := board.GetStone(engine.Loc{X: uint8(i + 1), Y: uint8(j + 1)})
+			index := i + 19*j
 			if stone&engine.COLOR_MASK == engine.BLACK {
-				game.Board[i+19*j] = 1
+				game.Board[index] = 1
 			} else if stone&engine.COLOR_MASK == engine.WHITE {
-				game.Board[i+19*j] = 2
+				game.Board[index] = 2
 			}
 		}
 	}

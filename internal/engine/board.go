@@ -56,6 +56,11 @@ func (l *Loc) Adjacent() [4]Loc {
 	}
 }
 
+// Get index of Loc on a one-dimensional grid
+func (l *Loc) Linear(width uint8) uint16 {
+	return uint16(l.X) + uint16(l.Y)*uint16(width)
+}
+
 func (l *Loc) String() string {
 	return string('{' + l.X + ',' + l.Y + '}')
 }
@@ -82,24 +87,24 @@ func NewBoard(size uint8) *Board {
 }
 
 func (b *Board) GetStone(l Loc) uint8 {
-	return b.Board[l.X+l.Y*b.Size]
+	return b.Board[l.Linear(b.Size)]
 }
 
 // Get stone value then mark it.
 func (b *Board) GetAndMarkStone(l Loc) uint8 {
-	stone := b.Board[l.X+l.Y*b.Size]
+	stone := b.Board[l.Linear(b.Size)]
 	b.SetMark(l)
 	return stone
 }
 
 // Sets the MARK value of a location.
 func (b *Board) SetMark(l Loc) {
-	b.Board[l.X+l.Y*b.Size] |= MARK
+	b.Board[l.Linear(b.Size)] |= MARK
 }
 
 // Clears the MARK value of a location.
 func (b *Board) UnsetMark(l Loc) {
-	b.Board[l.X+l.Y*b.Size] &= ^MARK
+	b.Board[l.Linear(b.Size)] &= ^MARK
 }
 
 // Get unmarked values adjacent to a location.
@@ -117,11 +122,11 @@ func (b *Board) GetUnmarkedAdjacent(l Loc) []uint8 {
 }
 
 func (b *Board) SetStone(l Loc, color uint8) {
-	b.Board[l.X+l.Y*b.Size] = color
+	b.Board[l.Linear(b.Size)] = color
 }
 
 func (b *Board) UnsetStone(l Loc) {
-	b.Board[l.X+l.Y*b.Size] = 0
+	b.Board[l.Linear(b.Size)] = 0
 }
 
 func (b *Board) MakeMove(l Loc) bool {
