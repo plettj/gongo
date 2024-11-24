@@ -2,11 +2,29 @@ package tui
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/charmbracelet/lipgloss"
 )
 
+// Helper for getting hoshi points (star points) designed by me.
+func isHoshi(x, y, size int) bool {
+	if size%2 == 0 {
+		return false
+	} else if size >= 15 {
+		return (x == 3 || x == size/2 || x == size-4) && (y == 3 || y == size/2 || y == size-4)
+	} else if size == 13 {
+		return (x == 3 || x == size-4) && (y == 3 || y == size-4) || (x == y && x == size/2)
+	} else if size >= 7 {
+		return (x == 2 || x == size-3) && (y == 2 || y == size-3) || (size > 7 && x == y && x == size/2)
+	} else {
+		return x%2 == 1 && y%2 == 1
+	}
+}
+
 func (m *Model) View() string {
+	size := m.Game.Size
+
 	titleStyle := lipgloss.NewStyle() // Could be bold, unsure how it looks though.
 	themedStyle := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("#6731F1"))
@@ -32,43 +50,51 @@ func (m *Model) View() string {
 
 	topText := fmt.Sprintf("\n%s%s\n\n%s's turn.\n\n", title, version, emphasizedStyle.Render(turn))
 
-	boardText := "     A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  Q  R  S  T\n"
-	boardText += fmt.Sprint(themedStyle.Render("   ╭─────────────────────────────────────────────────────────╮")) + "\n"
-	for y := 0; y < 19; y++ {
-		boardText += fmt.Sprintf("%2d %s", 19-y, themedStyle.Render("│"))
-		for x := 0; x < 19; x++ {
+	boardBorder := strings.Repeat("───", size)
+	boardLetters := "   "
+	for i := 0; i < size; i++ {
+		letter := 'A' + rune(i)
+		if letter >= 'I' {
+			letter++
+		}
+		boardLetters += fmt.Sprintf("  %c", letter)
+	}
+
+	boardText := boardLetters + "\n"
+	boardText += themedStyle.Render("   ╭"+boardBorder+"╮") + "\n"
+	for y := 0; y < size; y++ {
+		boardText += fmt.Sprintf("%2d %s", size-y, themedStyle.Render("│"))
+		for x := 0; x < size; x++ {
 			cell := "─┼─"
 
 			if x == 0 && y == 0 {
 				cell = " ┌─"
-			} else if x == 0 && y == 19-1 {
+			} else if x == 0 && y == size-1 {
 				cell = " └─"
-			} else if x == 19-1 && y == 0 {
+			} else if x == size-1 && y == 0 {
 				cell = "─┐ "
-			} else if x == 19-1 && y == 19-1 {
+			} else if x == size-1 && y == size-1 {
 				cell = "─┘ "
 			} else if x == 0 {
 				cell = " ├─"
-			} else if x == 19-1 {
+			} else if x == size-1 {
 				cell = "─┤ "
 			} else if y == 0 {
 				cell = "─┬─"
-			} else if y == 19-1 {
+			} else if y == size-1 {
 				cell = "─┴─"
-			}
-
-			if (x+3)%6 == 0 && (y+3)%6 == 0 {
+			} else if isHoshi(x, y, size) {
 				cell = "─┿─"
 			}
 
-			if m.Game.Board[x+y*19] != 0 {
-				switch m.Game.Board[x+y*19] {
+			if m.Game.Board[x+y*size] != 0 {
+				switch m.Game.Board[x+y*size] {
 				case 1:
 					cell = "⚫"
 				case 2:
 					cell = "⚪"
 				}
-				if x < 19-1 {
+				if x < size-1 {
 					cell += "╶"
 				} else {
 					cell += " "
@@ -84,9 +110,9 @@ func (m *Model) View() string {
 		}
 		boardText += themedStyle.Render("│") + "\n"
 	}
-	boardText += fmt.Sprint(themedStyle.Render("   ╰─────────────────────────────────────────────────────────╯")) + "\n"
+	boardText += themedStyle.Render("   ╰"+boardBorder+"╯") + "\n"
 
-	bottomText := fmt.Sprint(mutedStyle.Render(" r: restart • q: exit\n"))
+	bottomText := mutedStyle.Render(" r: restart • q: exit\n")
 
 	return fmt.Sprintf("%s%s%s", topText, boardText, bottomText)
 }

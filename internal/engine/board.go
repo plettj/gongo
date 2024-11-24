@@ -33,7 +33,7 @@ func opponent(color byte) byte {
 // Fast internal Go board representation.
 type Board struct {
 	Size  byte
-	Board [(19 + 2) * (19 + 2)]byte // 19*19 array with 1 padding to represent the edge.
+	Board []byte // size*size array with 1 padding on each side for the edge.
 	Turn  byte
 	// TODO: Consider a representation for the Ko square.
 	// TODO: Consider storing the chains and liberties in the board.
@@ -75,6 +75,8 @@ type Group struct {
 func NewBoard(size byte) *Board {
 	board := Board{Size: size, Turn: BLACK}
 	len := int(size + 2)
+
+	board.Board = make([]byte, len*len)
 
 	for i := range board.Board {
 		if i < len || i%len == 0 || i%len == len-1 || i >= len*len-len {
@@ -246,9 +248,12 @@ func (b *Board) GetGroup(l Loc, unmark bool) Group {
 func (b *Board) MakeRandomMove() bool {
 	rand.Seed(time.Now().UnixNano())
 
-	for tries := 0; tries < 1000; tries++ {
-		x := byte(rand.Intn(int(b.Size)) + 1)
-		y := byte(rand.Intn(int(b.Size)) + 1)
+	size := int(b.Size)
+
+	// Has a 63.2% change of finding the "final" move
+	for tries := 0; tries < size*size; tries++ {
+		x := byte(rand.Intn(size) + 1)
+		y := byte(rand.Intn(size) + 1)
 		loc := Loc{X: x, Y: y}
 
 		if b.MakeMove(loc) {

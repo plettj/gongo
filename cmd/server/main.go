@@ -9,8 +9,12 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
+const (
+	BOARD_SIZE = 13
+)
+
 func main() {
-	p := tea.NewProgram(tui.NewModel(), tea.WithAltScreen())
+	p := tea.NewProgram(tui.NewModel(BOARD_SIZE), tea.WithAltScreen())
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("An error occurred while trying to show my new Go game player: %v", err)
 		os.Exit(1)

@@ -7,17 +7,20 @@ import (
 	"gongo/internal/engine"
 )
 
+// FIXME: Massively improve this architecture to avoid so much reallocation and conversion.
+
 func BoardToGame(board *engine.Board) *Game {
+	size := int(board.Size)
 	game := Game{
-		Size:  int(board.Size),
-		Board: [19 * 19]byte{},
+		Size:  size,
+		Board: make([]byte, size*size),
 		Turn:  board.Turn,
 	}
 
-	for i := 0; i < 19; i++ {
-		for j := 0; j < 19; j++ {
+	for i := 0; i < size; i++ {
+		for j := 0; j < size; j++ {
 			stone := board.GetStone(engine.Loc{X: byte(i + 1), Y: byte(j + 1)})
-			index := i + 19*j
+			index := i + size*j
 			if stone&engine.COLOR_MASK == engine.BLACK {
 				game.Board[index] = 1
 			} else if stone&engine.COLOR_MASK == engine.WHITE {
@@ -30,14 +33,14 @@ func BoardToGame(board *engine.Board) *Game {
 }
 
 func GameToBoard(game *Game) *engine.Board {
-	board := engine.NewBoard(19)
-	board.Size = byte(game.Size)
+	size := game.Size
+	board := engine.NewBoard(byte(size))
 	board.Turn = game.Turn
 
 	// TODO: Once Zobrist hashes are implemented, use the tui.Game.Moves to initialize them.
-	for i := 0; i < 19; i++ {
-		for j := 0; j < 19; j++ {
-			cell := game.Board[i+19*j]
+	for i := 0; i < size; i++ {
+		for j := 0; j < size; j++ {
+			cell := game.Board[i+size*j]
 			loc := engine.Loc{X: byte(i + 1), Y: byte(j + 1)}
 			if cell == 1 {
 				board.SetStone(loc, engine.BLACK)
