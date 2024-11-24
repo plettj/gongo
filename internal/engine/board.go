@@ -2,8 +2,8 @@
 Fast board implementation for Go games.
 
 Unsure of the best way. Below are my options.
-- [361]uint8s (current)
-- [19][19]uint8s (presumably no difference)
+- [361]bytes (current)
+- [19][19]bytes (presumably no difference)
 - 3 [19]uint32s (fast since it's all bitwise)
 */
 
@@ -15,34 +15,34 @@ import (
 )
 
 const (
-	EMPTY uint8 = 0
-	BLACK uint8 = 1
-	WHITE uint8 = 2
-	EDGE  uint8 = 3 // Edge of the board.
-	MARK  uint8 = 4 // Marked by our exploration algorithm.
+	EMPTY byte = 0
+	BLACK byte = 1
+	WHITE byte = 2
+	EDGE  byte = 3 // Edge of the board.
+	MARK  byte = 4 // Marked by our exploration algorithm.
 	// TODO: Consider a representation for the Ko square.
 )
 
 const (
-	COLOR_MASK uint8 = 0b11
+	COLOR_MASK byte = 0b11
 )
 
-func opponent(color uint8) uint8 {
+func opponent(color byte) byte {
 	return 3 - color
 }
 
 // Fast internal Go board representation.
 type Board struct {
-	Size  uint8
-	Board [(19 + 2) * (19 + 2)]uint8 // 19*19 array with 1 padding to represent the edge.
-	Turn  uint8
+	Size  byte
+	Board [(19 + 2) * (19 + 2)]byte // 19*19 array with 1 padding to represent the edge.
+	Turn  byte
 	// TODO: Consider storing the chains and liberties in the board.
 	// TODO: Consider storing a pointer to a scoring object.
 }
 
 // Individual board location.
 type Loc struct {
-	X, Y uint8
+	X, Y byte
 }
 
 // Get values adjacent to a location.
@@ -57,7 +57,7 @@ func (l *Loc) Adjacent() [4]Loc {
 }
 
 // Get index of Loc on a one-dimensional grid
-func (l *Loc) Linear(width uint8) uint16 {
+func (l *Loc) Linear(width byte) uint16 {
 	return uint16(l.X) + uint16(l.Y)*uint16(1+width+1)
 }
 
@@ -66,12 +66,12 @@ func (l *Loc) String() string {
 }
 
 type Group struct {
-	Color     uint8 // EMPTY, BLACK, WHITE
+	Color     byte // EMPTY, BLACK, WHITE
 	Stones    []Loc
 	Liberties []Loc
 }
 
-func NewBoard(size uint8) *Board {
+func NewBoard(size byte) *Board {
 	board := Board{Size: size, Turn: BLACK}
 	len := int(size + 2)
 
@@ -86,12 +86,12 @@ func NewBoard(size uint8) *Board {
 	return &board
 }
 
-func (b *Board) GetStone(l Loc) uint8 {
+func (b *Board) GetStone(l Loc) byte {
 	return b.Board[l.Linear(b.Size)]
 }
 
 // Get stone value then mark it.
-func (b *Board) GetAndMarkStone(l Loc) uint8 {
+func (b *Board) GetAndMarkStone(l Loc) byte {
 	stone := b.Board[l.Linear(b.Size)]
 	b.SetMark(l)
 	return stone
@@ -108,8 +108,8 @@ func (b *Board) UnsetMark(l Loc) {
 }
 
 // Get unmarked values adjacent to a location.
-func (b *Board) GetUnmarkedAdjacent(l Loc) []uint8 {
-	adjs := []uint8{}
+func (b *Board) GetUnmarkedAdjacent(l Loc) []byte {
+	adjs := []byte{}
 
 	for _, v := range l.Adjacent() {
 		stone := b.GetAndMarkStone(v)
@@ -121,7 +121,7 @@ func (b *Board) GetUnmarkedAdjacent(l Loc) []uint8 {
 	return adjs
 }
 
-func (b *Board) SetStone(l Loc, color uint8) {
+func (b *Board) SetStone(l Loc, color byte) {
 	b.Board[l.Linear(b.Size)] = color
 }
 
@@ -246,8 +246,8 @@ func (b *Board) MakeRandomMove() bool {
 	rand.Seed(time.Now().UnixNano())
 
 	for tries := 0; tries < 1000; tries++ {
-		x := uint8(rand.Intn(int(b.Size)) + 1)
-		y := uint8(rand.Intn(int(b.Size)) + 1)
+		x := byte(rand.Intn(int(b.Size)) + 1)
+		y := byte(rand.Intn(int(b.Size)) + 1)
 		loc := Loc{X: x, Y: y}
 
 		if b.MakeMove(loc) {

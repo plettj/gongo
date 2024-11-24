@@ -59,8 +59,8 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch tea.MouseEvent(msg).Action {
 		case tea.MouseActionMotion:
 			if 0 <= x && x < 19 && 0 <= y && y < 19 {
-				m.Cursor[0] = uint8(x)
-				m.Cursor[1] = uint8(y)
+				m.Cursor[0] = byte(x)
+				m.Cursor[1] = byte(y)
 			}
 		case tea.MouseActionPress:
 			if tea.MouseEvent(msg).Button == tea.MouseButtonLeft && 0 <= x && x < 19 && 0 <= y && y < 19 {

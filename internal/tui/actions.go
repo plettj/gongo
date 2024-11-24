@@ -13,7 +13,7 @@ func (m *Model) PlayRandomMove() {
 }
 
 // Pre: 0 <= x < 19, 0 <= x < 19
-func (m *Model) PlayMove(x uint8, y uint8) bool {
+func (m *Model) PlayMove(x byte, y byte) bool {
 	board := GameToBoard(&m.Game)
 	legal := board.MakeMove(engine.Loc{X: x + 1, Y: y + 1})
 

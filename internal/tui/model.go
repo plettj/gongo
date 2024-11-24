@@ -7,14 +7,14 @@ import (
 // TODO: To decrease the total number of board representations in this repo,
 //       Redesign this to be also the serializable representation of the board.
 type Game struct {
-	Board [19 * 19]uint8 // 0 is empty, 1 is black, 2 is white
-	Moves [][2]uint8     // List of moves made
-	Turn  uint8
+	Board [19 * 19]byte // 0 is empty, 1 is black, 2 is white
+	Moves [][2]byte     // List of moves made
+	Turn  byte
 }
 
 type Model struct {
 	Game       Game
-	Cursor     [2]uint8 // Which cell is currently selected
+	Cursor     [2]byte // Which cell is currently selected
 	MouseEvent tea.MouseEvent
 	Offsets    [2]int // Offset of board from top-left of view
 }
@@ -25,7 +25,7 @@ func (m *Model) CursorCell() uint16 {
 
 func NewModel() *Model {
 	model := Model{
-		Game: Game{Board: [19 * 19]uint8{
+		Game: Game{Board: [19 * 19]byte{
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -46,10 +46,10 @@ func NewModel() *Model {
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		},
-			Moves: [][2]uint8{},
+			Moves: [][2]byte{},
 			Turn:  1,
 		},
-		Cursor:  [2]uint8{9, 9},
+		Cursor:  [2]byte{9, 9},
 		Offsets: [2]int{4, 7},
 	}
 
