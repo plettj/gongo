@@ -53,7 +53,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 	case tea.MouseMsg:
 		// [0,0] is the top-left cell, A19
-		x := (msg.X - m.Offsets[0]) / 2 // One cell is two characters wide
+		x := (msg.X - m.Offsets[0]) / 3 // One cell is 3 characters wide
 		y := msg.Y - m.Offsets[1]
 
 		switch tea.MouseEvent(msg).Action {

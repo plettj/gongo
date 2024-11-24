@@ -15,7 +15,7 @@ I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.
 - **Architecture:** Server/Client (until [Go WASM](https://github.com/golang/go/issues/28631) supports [threads](https://caniuse.com/wasm-threads))
 - **Hosting:** [Railway](https://railway.app/)
 - **Framework:** None (saved by [the crowd](https://www.reddit.com/r/golang/comments/q3r8qo/do_you_guys_use_frameworks_with_go_for_backend/))
-- **CLI:** [Bubbletea](https://github.com/charmbracelet/bubbletea)
+- **CLI:** [Bubbletea](https://github.com/charmbracelet/bubbletea) and [Lipgloss](https://github.com/charmbracelet/lipgloss)
 - **API Testing:** [Postman](https://www.postman.com/)
 - **Website:** Hoping to host on _gongo.dev_ eventually ([this](https://www.reddit.com/r/baduk/comments/18cnmvj/awfull_experience_with_learning_go/) is motivation)
 
