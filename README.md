@@ -1,4 +1,4 @@
-<div align="center" style="padding: 0px 50px"><img width="190px" src="_files/art/gongo-simple.png" /></div>
+<div align="center" style="padding: 0px 50px"><img width="190px" src="_files/art/gongo-rounded.png" /></div>
 <div align="center" style="text-align: center; width: 100%">
 <h1>Gongo - The Go Go Engine</h1>
 </div>
@@ -6,6 +6,15 @@
 This repo is a server-side [Go](<https://en.wikipedia.org/wiki/Go_(game)>) (game) engine written in [Go](https://go.dev/) (language)
 
 I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.com/) in the Go language, so I'll be documenting some of that learning here.
+
+---
+
+<div align="center" style="padding: 0px 50px">
+<figure>
+  <img src="_files/gallery/tui-1.4.png" alt="Gongo tui v1.4 13x13 showcase">
+  <figcaption><i>Me and my v1.4 bot building the 13x13 Gongo logo.</i></figcaption>
+</figure>
+</div>
 
 ---
 
@@ -35,7 +44,7 @@ I hope to implement _self-play_ learning in this Go engine.
 - Compared [goCLI](https://github.com/urfave/cli) to [tview](https://github.com/rivo/tview) to [BubbleTea](https://github.com/charmbracelet/bubbletea), deciding on BubbleTea.
 - Learned [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)s to implement 8-character game IDs [like lichess](https://github.com/lichess-org/lila/blob/master/modules/game/src/main/IdGenerator.scala) (currently unbatched).
 - Learned the [Elm Architecture](https://guide.elm-lang.org/architecture/) to understand [BubbleTea's basics](https://github.com/charmbracelet/bubbletea/tree/master/tutorials/basics).
-- Go [slices](https://go.dev/blog/slices-intro).
+- Go [slices](https://go.dev/blog/slices-intro) and [arrays](https://gobyexample.com/arrays).
 - How to [write good comments](https://www.digitalocean.com/community/tutorials/how-to-write-comments-in-go).
 - Dove into [SGF](https://red-bean.com/sgf/index.html) (specifically, [Go SGF](https://red-bean.com/sgf/go.html)) to write my own parser and converter. Examples [here](https://red-bean.com/sgf/examples/).
 - Learned some [Go Compiler Intrinsics](https://dave.cheney.net/2019/08/20/go-compiler-intrinsics) so I could do [Go bit math](https://pkg.go.dev/math/bits) faster.
