@@ -35,10 +35,12 @@ type Board struct {
 	Size  byte
 	Board []byte // size*size array with 1 padding on each side for the edge.
 	Turn  byte
-	// TODO: Consider a representation for the Ko square.
+	// TODO: Implement this.
+	Ko Loc // nil if no Ko.
 	// TODO: Consider storing the chains and liberties in the board.
 	// TODO: Consider storing a pointer to a scoring object.
 	// TODO: Zobrist hashes.
+	Marked []Loc // TESTING ONLY
 }
 
 // Individual board location.
@@ -111,13 +113,14 @@ func (b *Board) UnsetMark(l Loc) {
 }
 
 // Get unmarked values adjacent to a location.
-func (b *Board) GetUnmarkedAdjacent(l Loc) []byte {
-	adjs := []byte{}
+// Post: Marks the stones it visits.
+func (b *Board) GetUnmarkedAdjacent(l Loc) [4]byte {
+	adjs := [4]byte{EDGE, EDGE, EDGE, EDGE}
 
-	for _, v := range l.Adjacent() {
+	for i, v := range l.Adjacent() {
 		stone := b.GetAndMarkStone(v)
 		if stone&MARK == 0 {
-			adjs = append(adjs, stone)
+			adjs[i] = stone
 		}
 	}
 
@@ -141,56 +144,54 @@ func (b *Board) MakeMove(l Loc) bool {
 	b.SetStone(l, b.Turn)
 	opp := opponent(b.Turn)
 
-	/*
-		group := b.GetGroup(l, true)
-		suicide := len(group.Liberties) == 0
+	group := b.GetGroup(l, true)
+	// TESTING ONLY
+	b.Marked = group.Stones
+	suicide := len(group.Liberties) == 0
 
-		if suicide && len(group.Stones) > 1 {
-			// FIXME: Dependent on ruleset. https://qr.ae/p2EkE1
+	if suicide && len(group.Stones) > 1 {
+		b.UnsetStone(l)
+		return false // Cannot play a multi-stone suicide in most rules (FIXME: RULES https://qr.ae/p2EkE1)
+	}
 
-			// TODO: Use `defer` to always unset / unmark, then modify usage. https://go.dev/doc/effective_go#defer
-			b.UnsetStone(l)
-			return false // Cannot play a multi-stone suicide
+	adjs := l.Adjacent()
+	deadGroups := []Group{}
+	toUnmark := []Loc{}
+
+	for _, v := range adjs {
+		stone := b.GetStone(v)
+		isOpp := stone&COLOR_MASK == opp
+		isMarked := stone&MARK == MARK
+
+		if !isOpp || isMarked {
+			continue // Not a new group
 		}
 
-		adjs := l.Adjacent()
-		deadGroups := []Group{}
-		toUnmark := []Loc{}
+		// Leave group stones marked for preventing duplicated groups
+		group := b.GetGroup(v, false)
 
-		for _, v := range adjs {
-			stone := b.GetStone(v)
-			isOpp := stone&COLOR_MASK == opp
-			isMarked := stone&MARK == MARK
+		toUnmark = append(toUnmark, group.Stones...)
 
-			if !isOpp || isMarked {
-				continue // Not a new group
-			}
-
-			// Leave group stones marked for preventing duplicated groups
-			group := b.GetGroup(v, false)
-
-			toUnmark = append(toUnmark, group.Stones...)
-
-			if len(group.Liberties) == 0 {
-				deadGroups = append(deadGroups, group)
-			}
+		if len(group.Liberties) == 0 {
+			deadGroups = append(deadGroups, group)
 		}
+	}
 
-		for _, v := range toUnmark {
-			b.UnsetMark(v)
+	for _, v := range toUnmark {
+		b.UnsetMark(v)
+	}
+
+	if suicide && len(deadGroups) == 0 {
+		// FIXME: Dependent on ruleset. https://qr.ae/p2EkE1
+		b.UnsetStone(l)
+		return false // Cannot play self-atari if no groups are being killed
+	}
+
+	for _, g := range deadGroups {
+		for _, location := range g.Stones {
+			b.UnsetStone(location)
 		}
-
-		if suicide && len(deadGroups) == 0 {
-			// FIXME: Dependent on ruleset. https://qr.ae/p2EkE1
-			b.UnsetStone(l)
-			return false // Cannot play self-atari if no groups are being killed
-		}
-
-		for _, g := range deadGroups {
-			for _, location := range g.Stones {
-				b.UnsetStone(location)
-			}
-		}*/
+	}
 
 	b.Turn = opp
 
@@ -199,46 +200,45 @@ func (b *Board) MakeMove(l Loc) bool {
 
 // Traverse across a group of like locations.
 // Pre: There must be a stone at `l`.
-func (b *Board) GetGroup(l Loc, unmark bool) Group {
-	c := b.GetStone(l)
-	g := Group{Color: c & COLOR_MASK}
+func (b *Board) GetGroup(l Loc, toUnmark bool) Group {
+	s := b.GetAndMarkStone(l)
+	g := Group{Color: s & COLOR_MASK, Stones: []Loc{l}}
 
-	// Flood-fill exploration for efficient grouping
-	active := []Loc{l}
-	newActive := []Loc{}
+	// Inline flood-fill exploration for efficient grouping
+	active := 0 // Starting index of active stones in g.Stones
 
-	for len(active) > 0 {
-		newActive = newActive[:0]
+	for len(g.Stones)-active > 0 {
+		total := len(g.Stones)
 
-		for _, v := range active {
-			adjLocs := l.Adjacent()
+		for i := active; i < total; i++ {
+			currStone := g.Stones[active+i]
+			adjLocs := currStone.Adjacent()
 
-			for i, stone := range b.GetUnmarkedAdjacent(v) {
-				s := stone & COLOR_MASK
+			for j, stone := range b.GetUnmarkedAdjacent(currStone) {
+				c := stone & COLOR_MASK
 				switch {
-				case s == EMPTY:
+				case c == EMPTY:
 					g.Liberties = append(g.Liberties, adjLocs[i])
-				case s == c&COLOR_MASK:
+				case c == s&COLOR_MASK:
 					g.Stones = append(g.Stones, adjLocs[i])
-				case s != EDGE:
-					newActive = append(newActive, adjLocs[i])
+				case c != EDGE:
+					b.UnsetMark(adjLocs[j]) // Unmark opponent stones
 				}
 			}
 		}
 
-		active = newActive
+		active = total
 	}
 
-	// Conditionally unmark stones
-	if unmark {
+	for _, v := range g.Liberties {
+		b.UnsetMark(v)
+	}
+
+	// Conditionally unmark own stones
+	if toUnmark {
 		for _, v := range g.Stones {
 			b.UnsetMark(v)
 		}
-	}
-
-	// Always unmark liberties
-	for _, v := range g.Liberties {
-		b.UnsetMark(v)
 	}
 
 	return g

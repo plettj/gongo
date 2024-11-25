@@ -17,7 +17,7 @@ I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.
 
 ## Project Infrastructure
 
-- **Go Engine Code:** Referencing [GNU Go](https://www.gnu.org/software/gnugo/gnugo_4.html#SEC39), [KataGo](https://github.com/lightvector/KataGo/blob/master/cpp/README.md), and notably [LeelaZero](https://github.com/leela-zero)
+- **Go Engine Code:** Referencing [GNU Go](https://www.gnu.org/software/gnugo/gnugo_4.html#SEC39), [KataGo](https://github.com/lightvector/KataGo/blob/master/cpp/README.md), and notably [AlphaGoZero](https://discovery.ucl.ac.uk/id/eprint/10045895/1/agz_unformatted_nature.pdf) + [LeelaZero](https://github.com/leela-zero)
 - **Architecture:** Server/Client (until [Go WASM](https://github.com/golang/go/issues/28631) supports [threads](https://caniuse.com/wasm-threads))
 - **Hosting:** [Railway](https://railway.app/)
 - **Framework:** None (saved by [the crowd](https://www.reddit.com/r/golang/comments/q3r8qo/do_you_guys_use_frameworks_with_go_for_backend/))
@@ -50,6 +50,8 @@ I hope to implement _self-play_ learning in this Go engine.
 - Watched [this](https://www.youtube.com/watch?v=x_nCOEMvmJI&list=PLmN0neTso3JzkiYiDcLzpKaIDNoEQwAUI) go-in-go programming series.
 - Learned the [Flood Fill](https://en.wikipedia.org/wiki/Flood_fill) algorithm actually has a name.
 - Learned the specifics of [function inlining](https://go.dev/wiki/CompilerOptimizations?utm_source=chatgpt.com#function-inlining) to optimize speed.
+- [This](https://www.youtube.com/watch?v=x_nCOEMvmJI&list=PLmN0neTso3JzkiYiDcLzpKaIDNoEQwAUI&index=1&t=0s) Go-in-go series recently came out! Watched it all.
+- Read the full official [AlphaGo Zero](https://discovery.ucl.ac.uk/id/eprint/10045895/1/agz_unformatted_nature.pdf) paper.
 
 ---
 

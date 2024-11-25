@@ -34,6 +34,8 @@ func (m *Model) View() string {
 		Bold(true)
 	selectedCellStyle := lipgloss.NewStyle().
 		Background(lipgloss.Color("#FFFFFF"))
+	markedCellStyle := lipgloss.NewStyle().
+		Background(lipgloss.Color("#6731F1"))
 
 	turn := "Black"
 	if m.Game.Turn == 2 {
@@ -104,6 +106,13 @@ func (m *Model) View() string {
 			cell = mutedStyle.Render(cell)
 			if x == m.Cursor[0] && y == m.Cursor[1] {
 				cell = selectedCellStyle.Render(cell)
+			} else {
+				for _, marked := range m.Game.Marked {
+					if x == int(marked[0]) && y == int(marked[1]) {
+						cell = markedCellStyle.Render(cell)
+						break
+					}
+				}
 			}
 
 			boardText += cell

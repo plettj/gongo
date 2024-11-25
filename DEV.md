@@ -72,9 +72,23 @@ Note that I'm not disabling the import organization, as despite how [annoying](h
 - // I should create an [ANTLR](https://github.com/antlr/grammars-v4/blob/master/pgn/PGN.g4) standard for GGN and SGN.
 - Programming the scoring logic: [thread](https://www.reddit.com/r/cbaduk/comments/15tsaxj/comment/jwn5kku/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button).
 - Great simple Go AI reference code base: [wally](https://github.com/maksimKorzh/wally/blob/main/wally.py)
+- Consider [ONNX](https://onnx.ai/) standard for my method!
+- Consider a "transformer network" on top of the reinforcement learning base.
 
 ### Longer-term To-dos
 
 - Make my custom-written snowflake generator a public go package.
 - Create example `.ggn` and `.sgn` files.
 - Define on a `.md` file the exact specification of game rulesets my online player will be capable of.
+
+### Domains
+
+- aego.com ($58,000)
+- ahgo.com ($9,700) (.gg -> $100)
+- awgo.com ($14,000)
+- axgo.com ($9,700)
+- ahgo.live
+- gongo.dev
+- gongo.ong
+- gong.ong
+- befgo.com (looks like many simple 3-letter + go combos are safe)

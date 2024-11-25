@@ -12,9 +12,10 @@ import (
 func BoardToGame(board *engine.Board) *Game {
 	size := int(board.Size)
 	game := Game{
-		Size:  size,
-		Board: make([]byte, size*size),
-		Turn:  board.Turn,
+		Size:   size,
+		Board:  make([]byte, size*size),
+		Turn:   board.Turn,
+		Marked: [][2]byte{},
 	}
 
 	for i := 0; i < size; i++ {
@@ -27,6 +28,11 @@ func BoardToGame(board *engine.Board) *Game {
 				game.Board[index] = 2
 			}
 		}
+	}
+
+	// TESTING ONLY
+	for i := range board.Marked {
+		game.Marked = append(game.Marked, [2]byte{board.Marked[i].X - 1, board.Marked[i].Y - 1})
 	}
 
 	return &game
