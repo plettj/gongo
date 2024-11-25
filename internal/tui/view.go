@@ -22,6 +22,7 @@ func isHoshi(x, y, size int) bool {
 	}
 }
 
+// TODO: Extract myself some *helper functions* :sparkles:
 func (m *Model) View() string {
 	size := m.Game.Size
 
@@ -36,6 +37,11 @@ func (m *Model) View() string {
 		Background(lipgloss.Color("#FFFFFF"))
 	markedCellStyle := lipgloss.NewStyle().
 		Background(lipgloss.Color("#6731F1"))
+	inactiveTabStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#555555"))
+	activeTabStyle := lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color("#FFFFFF"))
 
 	turn := "Black"
 	if m.Game.Turn == 2 {
@@ -121,7 +127,23 @@ func (m *Model) View() string {
 	}
 	boardText += themedStyle.Render("   ╰"+boardBorder+"╯") + "\n"
 
-	bottomText := mutedStyle.Render(" r: restart • q: exit\n")
+	// TODO: Set up tabs to actually work. Include two settings:
+	//       - Board size
+	//       - Whether to play against a bot
+	tabs := ""
+	for i, tab := range TABS {
+		if tab == m.ActiveTab {
+			tabs += activeTabStyle.Render(tab)
+		} else {
+			tabs += inactiveTabStyle.Render(tab)
+		}
+		if i < len(TABS)-1 {
+			tabs += inactiveTabStyle.Render(" | ")
+		}
+	}
+
+	commands := mutedStyle.Render("r: restart • q: exit\n")
+	bottomText := fmt.Sprintf("\n%s\n\n%s\n", tabs, commands)
 
 	return fmt.Sprintf("%s%s%s", topText, boardText, bottomText)
 }

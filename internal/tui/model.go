@@ -18,7 +18,10 @@ type Model struct {
 	Cursor     [2]int // Which cell is currently selected
 	MouseEvent tea.MouseEvent
 	Offsets    [2]int // Offset of board from top-left of view
+	ActiveTab  string
 }
+
+var TABS = [2]string{"Game", "Settings"}
 
 func (m *Model) CursorCell() int {
 	return m.Cursor[0] + m.Cursor[1]*m.Game.Size
@@ -32,12 +35,13 @@ func NewModel(size int) *Model {
 			Marked: [][2]byte{},
 			Turn:   1,
 		},
-		Cursor:  [2]int{size / 2, size / 2},
-		Offsets: [2]int{4, 7},
+		Cursor:    [2]int{size / 2, size / 2},
+		Offsets:   [2]int{4, 7},
+		ActiveTab: TABS[0],
 	}
 
-	if size == 13 {
-		model.Game.Board = GONGO_13[:]
+	if size == 19 {
+		model.Game.Board = GONGO_19[:]
 	}
 
 	return &model

@@ -26,7 +26,7 @@ func (m *Model) PlayMove(x int, y int) bool {
 		m.Game = *BoardToGame(board)
 
 		// Bot plays move
-		m.PlayRandomMove()
+		// m.PlayRandomMove()
 	}
 
 	return legal
