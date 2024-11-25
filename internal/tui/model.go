@@ -10,6 +10,7 @@ type Game struct {
 	Size   int
 	Board  []byte // 0 is empty, 1 is black, 2 is white
 	Turn   byte
+	Ko     [2]byte   // (-1, -1) is no ko.
 	Marked [][2]byte // List of marked cells
 }
 

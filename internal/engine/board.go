@@ -35,8 +35,7 @@ type Board struct {
 	Size  byte
 	Board []byte // size*size array with 1 padding on each side for the edge.
 	Turn  byte
-	// TODO: Implement this.
-	Ko Loc // nil if no Ko.
+	Ko    Loc // {0, 0} (EDGE) if no Ko.
 	// TODO: Consider storing the chains and liberties in the board.
 	// TODO: Consider storing a pointer to a scoring object.
 	// TODO: Zobrist hashes.
@@ -76,7 +75,7 @@ type Group struct {
 }
 
 func NewBoard(size byte) *Board {
-	board := Board{Size: size, Turn: BLACK}
+	board := Board{Size: size, Turn: BLACK, Ko: Loc{0, 0}}
 	len := int(size + 2)
 
 	board.Board = make([]byte, len*len)
@@ -94,6 +93,10 @@ func NewBoard(size byte) *Board {
 
 func (b *Board) GetStone(l Loc) byte {
 	return b.Board[l.Linear(b.Size)]
+}
+
+func (b *Board) IsOpenLoc(l Loc) bool {
+	return l != b.Ko && b.GetStone(l) == EMPTY
 }
 
 // Get stone value then mark it.
@@ -137,7 +140,7 @@ func (b *Board) UnsetStone(l Loc) {
 }
 
 func (b *Board) MakeMove(l Loc) bool {
-	if b.GetStone(l) != EMPTY {
+	if !b.IsOpenLoc(l) {
 		return false // Cannot place a stone on top of another stone
 	}
 
@@ -181,6 +184,12 @@ func (b *Board) MakeMove(l Loc) bool {
 		for _, location := range g.Stones {
 			b.UnsetStone(location)
 		}
+	}
+
+	if suicide && len(deadGroups) == 1 && len(deadGroups[0].Stones) == 1 {
+		b.Ko = deadGroups[0].Stones[0]
+	} else {
+		b.Ko = Loc{0, 0}
 	}
 
 	b.Turn = opp
