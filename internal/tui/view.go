@@ -24,7 +24,7 @@ func isHoshi(x, y, size int) bool {
 
 // TODO: Extract myself some *helper functions* :sparkles:
 func (m *Model) View() string {
-	size := m.Game.Size
+	size := int(m.Board.Size)
 
 	titleStyle := lipgloss.NewStyle() // Could be bold, unsure how it looks though.
 	themedStyle := lipgloss.NewStyle().
@@ -44,7 +44,7 @@ func (m *Model) View() string {
 		Foreground(lipgloss.Color("#FFFFFF"))
 
 	turn := "Black"
-	if m.Game.Turn == 2 {
+	if m.Board.Turn == 2 {
 		turn = "White"
 	}
 
@@ -95,8 +95,8 @@ func (m *Model) View() string {
 				cell = "─┿─"
 			}
 
-			if m.Game.Board[x+y*size] != 0 {
-				switch m.Game.Board[x+y*size] {
+			if m.Board.Board[x+y*size] != 0 {
+				switch m.Board.Board[x+y*size] {
 				case 1:
 					cell = "⚫"
 				case 2:
@@ -113,8 +113,8 @@ func (m *Model) View() string {
 			if x == m.Cursor[0] && y == m.Cursor[1] {
 				cell = selectedCellStyle.Render(cell)
 			} else {
-				for _, marked := range m.Game.Marked {
-					if x == int(marked[0]) && y == int(marked[1]) {
+				for _, marked := range m.Board.Flagged {
+					if x == int(marked.X) && y == int(marked.Y) {
 						cell = markedCellStyle.Render(cell)
 						break
 					}

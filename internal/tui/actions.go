@@ -7,34 +7,25 @@ package tui
 import "gongo/internal/engine"
 
 func (m *Model) PlayRandomMove() bool {
-	board := GameToBoard(&m.Game)
-	played := board.MakeRandomMove()
-
-	if played {
-		m.Game = *BoardToGame(board)
-	}
+	played := m.Board.MakeRandomMove()
 
 	return played
 }
 
 // Pre: 0 <= x < 19, 0 <= x < 19
 func (m *Model) PlayMove(x int, y int) bool {
-	board := GameToBoard(&m.Game)
-	legal := board.MakeMove(engine.Loc{X: byte(x + 1), Y: byte(y + 1)})
+	legal := m.Board.MakeMove(engine.Loc{X: byte(x + 1), Y: byte(y + 1)})
 
-	if legal {
-		m.Game = *BoardToGame(board)
-
-		// Bot plays move
-		// m.PlayRandomMove()
+	if legal && m.Settings["Bot"] == ON {
+		m.PlayRandomMove()
 	}
 
 	return legal
 }
 
 func (m *Model) ClearBoard() {
-	for i := range m.Game.Board {
-		m.Game.Board[i] = 0
+	for i := range m.Board.Board {
+		m.Board.Board[i] = 0
 	}
-	m.Game.Turn = 1
+	m.Board.Turn = 1
 }

@@ -9,7 +9,7 @@ func (m *Model) Init() tea.Cmd {
 }
 
 func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	size := m.Game.Size
+	size := int(m.Board.Size)
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:

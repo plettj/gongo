@@ -36,11 +36,11 @@ type Board struct {
 	Board []byte // size*size array with 1 padding on each side for the edge.
 	Turn  byte
 	Ko    Loc // {0, 0} (EDGE) if no Ko.
-	// TODO: Consider storing the chains and liberties in the board.
+
+	Flagged []Loc // Should be removed in engine prod; used for UI.
+
 	// TODO: Consider storing a pointer to a scoring object.
 	// TODO: Zobrist hashes.
-
-	Marked []Loc // TESTING ONLY
 }
 
 // Individual board location.
