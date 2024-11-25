@@ -40,6 +40,7 @@ type Board struct {
 	// TODO: Consider storing the chains and liberties in the board.
 	// TODO: Consider storing a pointer to a scoring object.
 	// TODO: Zobrist hashes.
+
 	Marked []Loc // TESTING ONLY
 }
 
@@ -132,11 +133,11 @@ func (b *Board) SetStone(l Loc, color byte) {
 }
 
 func (b *Board) UnsetStone(l Loc) {
-	b.Board[l.Linear(b.Size)] = 0
+	b.Board[l.Linear(b.Size)] = EMPTY
 }
 
 func (b *Board) MakeMove(l Loc) bool {
-	if b.GetStone(l) != 0 {
+	if b.GetStone(l) != EMPTY {
 		return false // Cannot place a stone on top of another stone
 	}
 
@@ -144,9 +145,7 @@ func (b *Board) MakeMove(l Loc) bool {
 	b.SetStone(l, b.Turn)
 	opp := opponent(b.Turn)
 
-	group := b.GetGroup(l, true)
-	// TESTING ONLY
-	b.Marked = group.Stones
+	group := b.GetGroup(l)
 	suicide := len(group.Liberties) == 0
 
 	if suicide && len(group.Stones) > 1 {
@@ -156,29 +155,20 @@ func (b *Board) MakeMove(l Loc) bool {
 
 	adjs := l.Adjacent()
 	deadGroups := []Group{}
-	toUnmark := []Loc{}
 
 	for _, v := range adjs {
 		stone := b.GetStone(v)
-		isOpp := stone&COLOR_MASK == opp
-		isMarked := stone&MARK == MARK
 
-		if !isOpp || isMarked {
+		if stone&COLOR_MASK != opp {
 			continue // Not a new group
 		}
 
-		// Leave group stones marked for preventing duplicated groups
-		group := b.GetGroup(v, false)
-
-		toUnmark = append(toUnmark, group.Stones...)
+		// FIXME: Consider preventing duplicated groups
+		group := b.GetGroup(v)
 
 		if len(group.Liberties) == 0 {
 			deadGroups = append(deadGroups, group)
 		}
-	}
-
-	for _, v := range toUnmark {
-		b.UnsetMark(v)
 	}
 
 	if suicide && len(deadGroups) == 0 {
@@ -200,7 +190,7 @@ func (b *Board) MakeMove(l Loc) bool {
 
 // Traverse across a group of like locations.
 // Pre: There must be a stone at `l`.
-func (b *Board) GetGroup(l Loc, toUnmark bool) Group {
+func (b *Board) GetGroup(l Loc) Group {
 	s := b.GetAndMarkStone(l)
 	g := Group{Color: s & COLOR_MASK, Stones: []Loc{l}}
 	enemy := []Loc{}
@@ -236,12 +226,8 @@ func (b *Board) GetGroup(l Loc, toUnmark bool) Group {
 	for _, v := range enemy {
 		b.UnsetMark(v)
 	}
-
-	// Conditionally unmark own stones
-	if toUnmark {
-		for _, v := range g.Stones {
-			b.UnsetMark(v)
-		}
+	for _, v := range g.Stones {
+		b.UnsetMark(v)
 	}
 
 	return g

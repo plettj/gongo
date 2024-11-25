@@ -3,9 +3,12 @@
 <h1>Gongo - The Go Go Engine</h1>
 </div>
 
-This repo is a server-side [Go](<https://en.wikipedia.org/wiki/Go_(game)>) (game) engine written in [Go](https://go.dev/) (language).
+_This repo hosts:_
 
-I'm building it primarily to prepare for my [upcoming job](https://www.maximahq.com/) in the Go language, so I'll be documenting some of that learning here.
+- A beautiful TUI for [Go](<https://en.wikipedia.org/wiki/Go_(game)>)/[Baduk](https://www.reddit.com/r/baduk/)/[Weiki](https://www.cs.cmu.edu/~wjh/go/rules/Chinese.html)
+- A server-side Go engine
+
+> I'm building this Go (game) Go (language) engine primarily to prepare for my [upcoming job](https://www.maximahq.com/) in the Go language. That's why you can find some of my learning below.
 
 ---
 
