@@ -203,6 +203,7 @@ func (b *Board) MakeMove(l Loc) bool {
 func (b *Board) GetGroup(l Loc, toUnmark bool) Group {
 	s := b.GetAndMarkStone(l)
 	g := Group{Color: s & COLOR_MASK, Stones: []Loc{l}}
+	enemy := []Loc{}
 
 	// Inline flood-fill exploration for efficient grouping
 	active := 0 // Starting index of active stones in g.Stones
@@ -210,19 +211,18 @@ func (b *Board) GetGroup(l Loc, toUnmark bool) Group {
 	for len(g.Stones)-active > 0 {
 		total := len(g.Stones)
 
-		for i := active; i < total; i++ {
-			currStone := g.Stones[active+i]
-			adjLocs := currStone.Adjacent()
+		for _, baseStone := range g.Stones[active:] {
+			adjLocs := baseStone.Adjacent()
 
-			for j, stone := range b.GetUnmarkedAdjacent(currStone) {
+			for j, stone := range b.GetUnmarkedAdjacent(baseStone) {
 				c := stone & COLOR_MASK
 				switch {
 				case c == EMPTY:
-					g.Liberties = append(g.Liberties, adjLocs[i])
+					g.Liberties = append(g.Liberties, adjLocs[j])
 				case c == s&COLOR_MASK:
-					g.Stones = append(g.Stones, adjLocs[i])
+					g.Stones = append(g.Stones, adjLocs[j])
 				case c != EDGE:
-					b.UnsetMark(adjLocs[j]) // Unmark opponent stones
+					enemy = append(enemy, adjLocs[j])
 				}
 			}
 		}
@@ -231,6 +231,9 @@ func (b *Board) GetGroup(l Loc, toUnmark bool) Group {
 	}
 
 	for _, v := range g.Liberties {
+		b.UnsetMark(v)
+	}
+	for _, v := range enemy {
 		b.UnsetMark(v)
 	}
 
