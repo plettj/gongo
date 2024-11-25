@@ -83,12 +83,21 @@ Note that I'm not disabling the import organization, as despite how [annoying](h
 
 ### Domains
 
-- aego.com ($58,000)
-- ahgo.com ($9,700) (.gg -> $100)
-- awgo.com ($14,000)
+- 13go.com ($4,200)
+- ahgo.com ($9,700)
 - axgo.com ($9,700)
-- ahgo.live
+- dkgo.com ($8,300)
+- ffgo.com ($3,900)
+- g-go.com ($1,300)
+- l-go.com ($900)
+
+- noogg.com
+- baduk.gg
+- oh-go.com
+- ahgo.gg
+- gongo.gg
 - gongo.dev
 - gongo.ong
 - gong.ong
-- befgo.com (looks like many simple 3-letter + go combos are safe)
+- ogogn.com
+- playgo.gg
