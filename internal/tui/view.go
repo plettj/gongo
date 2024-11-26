@@ -2,6 +2,7 @@ package tui
 
 import (
 	"fmt"
+	"gongo/internal/engine"
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
@@ -22,41 +23,8 @@ func isHoshi(x, y, size int) bool {
 	}
 }
 
-// TODO: Extract myself some *helper functions* :sparkles:
-func (m *Model) View() string {
-	size := int(m.Board.Size)
-
-	titleStyle := lipgloss.NewStyle() // Could be bold, unsure how it looks though.
-	themedStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#6731F1"))
-	mutedStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.AdaptiveColor{Light: "#aaaaaa", Dark: "#555555"})
-	emphasizedStyle := lipgloss.NewStyle().
-		Bold(true)
-	selectedCellStyle := lipgloss.NewStyle().
-		Background(lipgloss.Color("#FFFFFF"))
-	markedCellStyle := lipgloss.NewStyle().
-		Background(lipgloss.Color("#6731F1"))
-	inactiveTabStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#555555"))
-	activeTabStyle := lipgloss.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color("#FFFFFF"))
-
-	turn := "Black"
-	if m.Board.Turn == 2 {
-		turn = "White"
-	}
-
-	title := titleStyle.Render(fmt.Sprintf("%s%s%s",
-		"Gon",
-		themedStyle.Render("g"),
-		titleStyle.Render("o tui"), // Wrapped in titleStyle due to undocumented lipgloss bug.
-	))
-
-	version := mutedStyle.Render(" - v1.4")
-
-	topText := fmt.Sprintf("\n%s%s\n\n%s's turn.\n\n", title, version, emphasizedStyle.Render(turn))
+func drawBoard(b *engine.Board, cursor [2]int, border, lines, selected, flagged lipgloss.Style) string {
+	size := int(b.Size)
 
 	boardBorder := strings.Repeat("───", size)
 	boardLetters := "   "
@@ -69,9 +37,9 @@ func (m *Model) View() string {
 	}
 
 	boardText := boardLetters + "\n"
-	boardText += themedStyle.Render("   ╭"+boardBorder+"╮") + "\n"
+	boardText += border.Render("   ╭"+boardBorder+"╮") + "\n"
 	for y := 0; y < size; y++ {
-		boardText += fmt.Sprintf("%2d %s", size-y, themedStyle.Render("│"))
+		boardText += fmt.Sprintf("%2d %s", size-y, border.Render("│"))
 		for x := 0; x < size; x++ {
 			cell := "─┼─"
 
@@ -95,11 +63,12 @@ func (m *Model) View() string {
 				cell = "─┿─"
 			}
 
-			if m.Board.Board[x+y*size] != 0 {
-				switch m.Board.Board[x+y*size] {
-				case 1:
+			c := b.GetStone(engine.Loc{X: byte(x + 1), Y: byte(y + 1)}) & engine.COLOR_MASK
+			if c != engine.EMPTY {
+				switch c {
+				case engine.BLACK:
 					cell = "⚫"
-				case 2:
+				case engine.WHITE:
 					cell = "⚪"
 				}
 				if x < size-1 {
@@ -109,13 +78,13 @@ func (m *Model) View() string {
 				}
 			}
 
-			cell = mutedStyle.Render(cell)
-			if x == m.Cursor[0] && y == m.Cursor[1] {
-				cell = selectedCellStyle.Render(cell)
+			cell = lines.Render(cell)
+			if x == cursor[0] && y == cursor[1] {
+				cell = selected.Render(cell)
 			} else {
-				for _, marked := range m.Board.Flagged {
-					if x == int(marked.X) && y == int(marked.Y) {
-						cell = markedCellStyle.Render(cell)
+				for _, f := range b.Flagged {
+					if x == int(f.X) && y == int(f.Y) {
+						cell = flagged.Render(cell)
 						break
 					}
 				}
@@ -123,9 +92,46 @@ func (m *Model) View() string {
 
 			boardText += cell
 		}
-		boardText += themedStyle.Render("│") + "\n"
+		boardText += border.Render("│") + "\n"
 	}
-	boardText += themedStyle.Render("   ╰"+boardBorder+"╯") + "\n"
+	boardText += border.Render("   ╰"+boardBorder+"╯") + "\n"
+
+	return boardText
+}
+
+func (m *Model) View() string {
+	themedStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#6731F1"))
+	mutedStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.AdaptiveColor{Light: "#aaaaaa", Dark: "#555555"})
+	emphasizedStyle := lipgloss.NewStyle().
+		Bold(true)
+	selectedCellStyle := lipgloss.NewStyle().
+		Background(lipgloss.Color("#FFFFFF"))
+	flaggedCellStyle := lipgloss.NewStyle().
+		Background(lipgloss.Color("#6731F1"))
+	inactiveTabStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#555555"))
+	activeTabStyle := lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color("#FFFFFF"))
+
+	turn := "Black"
+	if m.Board.Turn == 2 {
+		turn = "White"
+	}
+
+	title := fmt.Sprintf("%s%s%s",
+		"Gon",
+		themedStyle.Render("g"),
+		"o tui",
+	)
+
+	version := mutedStyle.Render(" - v1.4")
+
+	topText := fmt.Sprintf("\n%s%s\n\n%s's turn.\n\n", title, version, emphasizedStyle.Render(turn))
+
+	boardText := drawBoard(&m.Board, m.Cursor, themedStyle, mutedStyle, selectedCellStyle, flaggedCellStyle)
 
 	// TODO: Set up tabs to actually work. Include two settings:
 	//       - Board size

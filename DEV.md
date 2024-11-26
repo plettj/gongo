@@ -5,10 +5,10 @@
 - [x] Decide on an API protocol (gRPC, REST, GraphQL) we'll use, and router (gorilla/mux, gin, go) we'll use. Decisions: REST + gorilla/mux.
 - [x] Set up and test a first simple API request and response example to mimic the creation of a game. [Go REST](https://medium.com/@Moesif/building-a-restful-api-with-go-dbd6e7aecf87) tutorial. [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) specification.
 - [x] Create a bare-bones Go viewer in a nice CLI. Example: [Tetrgo](https://github.com/Broderick-Westrope/tetrigo?tab=readme-ov-file) built with [BubbleTea](https://github.com/charmbracelet/bubbletea?tab=readme-ov-file).
-- [ ] Research/experiment the computationally fastest way to represent a large Go game's board, and implement it.
+- [x] Research/experiment the computationally fastest way to represent a large Go game's board, and implement it.
       Representing Ko even with SuperKo: [My Forum Question](https://forums.online-go.com/t/is-there-ever-more-than-1-move-that-violates-positional-superko/53724) about it. [Discussion w/resources](https://forums.online-go.com/t/superko-rules/32466/4). [Situational Example](https://online-go.com/demo/view/580802). [Positional Example](https://online-go.com/demo/view/580801).
-- [ ] Research/experiment and decide on the various rules of Go I'll be supporting.
-- [ ] Research/experiment the computationally fastest way people have made move generators for Go.
+- [x] Research/experiment and decide on the various rules of Go I'll be supporting.
+- [x] Research/experiment the computationally fastest way people have made move generators for Go.
 - [ ] (large) Implement a very **basically intelligent** Go move generator.
       Computing if a group is pass-alive: https://senseis.xmp.net/?BensonsAlgorithm
       Storing moves of a game in Go: https://red-bean.com/sgf/go.html
