@@ -1,27 +1,38 @@
 package api
 
-// import (
-// 	"encoding/json"
-// 	"net/http"
+import (
+	"encoding/json"
+	"net/http"
 
-// 	"github.com/gorilla/mux"
+	"gongo/internal/engine"
+	"gongo/internal/utils"
 
-// 	"gongo/internal/engine"
-// )
+	"github.com/gorilla/mux"
+)
 
 // Set up the API routes and return a mux router.
-// func NewRouter() *mux.Router {
-// 	router := mux.NewRouter()
-// 	router.HandleFunc("/game", getGame).Methods("GET") // Define the GET /game endpoint
-// 	return router
-// }
+func NewRouter() *mux.Router {
+	router := mux.NewRouter()
+	router.HandleFunc("/game", getGame).Methods("GET")
+	return router
+}
+
+type Game struct {
+	Board engine.Board
+	Id    string
+}
 
 // GET /game endpoint
-// func getGame(w http.ResponseWriter, r *http.Request) {
-// 	game := engine.NewGame()
+func getGame(w http.ResponseWriter, r *http.Request) {
+	board := *engine.NewBoard(19)
 
-// 	w.Header().Set("Content-Type", "application/json")
-// 	if err := json.NewEncoder(w).Encode(game); err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 	}
-// }
+	game := Game{
+		Board: board,
+		Id:    utils.GetSnowflake(),
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(game); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}

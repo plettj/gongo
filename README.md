@@ -6,7 +6,7 @@
 _This repo hosts:_
 
 - A beautiful TUI for [Go](<https://en.wikipedia.org/wiki/Go_(game)>)/[Baduk](https://www.reddit.com/r/baduk/)/[Weiki](https://www.cs.cmu.edu/~wjh/go/rules/Chinese.html)
-- A server-side Go engine
+- A (simple) Go-playing engine
 
 > I'm building this Go (game) Go (language) engine primarily to prepare for my [upcoming job](https://www.maximahq.com/) in the Go language. That's why you can find some of my learning below.
 
@@ -15,6 +15,38 @@ _This repo hosts:_
 <div align="center">
   <img width="340px" src="_files/gallery/tui-1.4.png" alt="Gongo tui v1.4 13x13 showcase">
 </div>
+
+---
+
+## Getting Started
+
+### Installation
+
+As long as you've got Go installed, simply clone the repo.
+
+```sh
+git clone https://github.com/plettj/gongo
+```
+
+Gongo uses [Just](https://github.com/casey/just) to make running commands simpler. It's not necessary, but will make things easier. [Installation instructions](https://github.com/casey/just?tab=readme-ov-file#installation).
+
+### Usage
+
+To start the server:
+
+```sh
+just run
+# or if you don't have Just
+go run ./cmd/server/main.go
+```
+
+To start the TUI:
+
+```sh
+just tui
+# or if you don't have Just
+go run ./cmd/tui/main.go
+```
 
 ---
 
@@ -58,4 +90,4 @@ I hope to implement _self-play_ learning in this Go engine.
 
 ---
 
-_Project approach is inspired by [Lucas](https://github.com/Strophox)'s [Tetrs in Rust](https://github.com/Strophox/tetrs?tab=readme-ov-file)._
+_Project approach is inspired by Lucas's [Tetrs](https://github.com/Strophox/tetrs?tab=readme-ov-file)._
