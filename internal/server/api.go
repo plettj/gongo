@@ -1,4 +1,7 @@
-package api
+/*
+All API endpoints for the game server.
+*/
+package server
 
 import (
 	"encoding/json"
@@ -17,14 +20,9 @@ func NewRouter() *mux.Router {
 	return router
 }
 
-type Game struct {
-	Board engine.Board
-	Id    string
-}
-
 // GET /game endpoint
 func getGame(w http.ResponseWriter, r *http.Request) {
-	board := *engine.NewBoard(19)
+	board := engine.NewBoard(19)
 
 	game := Game{
 		Board: board,
