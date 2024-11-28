@@ -58,6 +58,7 @@ go run ./cmd/tui/main.go
 - **Framework:** None (saved by [the crowd](https://www.reddit.com/r/golang/comments/q3r8qo/do_you_guys_use_frameworks_with_go_for_backend/))
 - **CLI:** [Bubbletea](https://github.com/charmbracelet/bubbletea) and [Lipgloss](https://github.com/charmbracelet/lipgloss)
 - **API Testing:** [Postman](https://www.postman.com/)
+- **CI/CD:** [GolangCI](https://golangci-lint.run/), [GoReleaser](https://goreleaser.com/), [GitHub Actions](https://github.com/features/actions)
 - **Website:** Hoping to host on _gongo.dev_ eventually ([this](https://www.reddit.com/r/baduk/comments/18cnmvj/awfull_experience_with_learning_go/) is motivation)
 
 ## Engine

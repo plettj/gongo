@@ -1,0 +1,12 @@
+# This is a template Golang CI file with some sensible defaults.
+# Documentation is at https://golangci-lint.run/
+
+# TODO: Properly configure this file for Gongo.
+linters:
+  enable:
+    - thelper
+    - gofumpt
+    - tparallel
+    - unconvert
+    - unparam
+    - wastedassign
