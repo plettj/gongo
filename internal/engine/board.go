@@ -10,6 +10,7 @@ Unsure of the best way. Below are my options.
 package engine
 
 import (
+	"encoding/base64"
 	"math/rand"
 	"time"
 )
@@ -260,4 +261,39 @@ func (b *Board) MakeRandomMove() bool {
 	}
 
 	return false
+}
+
+// Board serialization for transmission between server and client.
+// Returns a Base64-encoded byte slice as a string.
+func (b *Board) Serialize() string {
+	serialized := make([]byte, 4+(b.Size+2)*(b.Size+2))
+
+	serialized[0] = b.Size
+	serialized[1] = b.Turn
+	serialized[2] = b.Ko.X
+	serialized[3] = b.Ko.Y
+
+	copy(serialized[4:], b.Board)
+
+	return base64.StdEncoding.EncodeToString(serialized)
+}
+
+// Board deserialization for transmission between server and client.
+// Receives a Base64-encoded byte slice as a string.
+func Deserialize(serialized string) *Board {
+	decoded, err := base64.StdEncoding.DecodeString(serialized)
+
+	if err != nil || len(decoded) < 4 {
+		return nil
+	}
+
+	size := decoded[0]
+	turn := decoded[1]
+	ko := Loc{X: decoded[2], Y: decoded[3]}
+
+	board := make([]byte, len(decoded)-4)
+
+	copy(board, decoded[4:])
+
+	return &Board{Size: size, Board: board, Turn: turn, Ko: ko}
 }

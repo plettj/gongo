@@ -5,6 +5,7 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"math/rand"
 	"net/http"
 	"sync"
@@ -18,7 +19,7 @@ import (
 
 // MatchmakingResponse is the response sent to a player when a match is found
 type MatchmakingResponse struct {
-	GameID      string `json:"game_id"`
+	GameId      string `json:"game_id"`
 	PlayerToken string `json:"player_token"`
 }
 
@@ -61,7 +62,7 @@ func startMatchmaking(boardSize int, queue chan chan MatchmakingResponse) {
 			// Initialize game
 			game := &Game{
 				Id:      gameId,
-				Board:   engine.NewBoard(byte(boardSize)),
+				Board:   engine.NewBoard(byte(boardSize)).Serialize(),
 				Players: [2]string{token1, token2},
 				Moves:   []Move{},
 			}
@@ -72,8 +73,8 @@ func startMatchmaking(boardSize int, queue chan chan MatchmakingResponse) {
 			mutex.Unlock()
 
 			// Respond to both players
-			match1 := MatchmakingResponse{GameID: gameId, PlayerToken: token1}
-			match2 := MatchmakingResponse{GameID: gameId, PlayerToken: token2}
+			match1 := MatchmakingResponse{GameId: gameId, PlayerToken: token1}
+			match2 := MatchmakingResponse{GameId: gameId, PlayerToken: token2}
 			waitingPlayer <- match1
 			player <- match2
 
@@ -85,6 +86,7 @@ func startMatchmaking(boardSize int, queue chan chan MatchmakingResponse) {
 
 // RequestMatch handles POST /api/games for matchmaking
 func RequestMatch(w http.ResponseWriter, r *http.Request) {
+	// TODO: Rewrite this to return waiting information for the user if no immediate match is found.
 	var req struct {
 		BoardSize int `json:"board_size"`
 	}
@@ -99,7 +101,7 @@ func RequestMatch(w http.ResponseWriter, r *http.Request) {
 	queue, ok := matchmakingQueues[req.BoardSize]
 	mutex.Unlock()
 	if !ok {
-		http.Error(w, "Unsupported board size", http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("Unsupported board size %d", req.BoardSize), http.StatusBadRequest)
 		return
 	}
 

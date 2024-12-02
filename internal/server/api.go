@@ -13,11 +13,15 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Set up the API routes and return a mux router.
 func NewRouter() *mux.Router {
 	router := mux.NewRouter()
-	router.HandleFunc("/game", getGame).Methods("GET")
-	return router
+	apiRouter := router.PathPrefix("/api").Subrouter()
+	// TODO: Remove the /game endpoint and fully replace it with the /games endpoint.
+	apiRouter.HandleFunc("/game", getGame).Methods("GET")
+
+	apiRouter.HandleFunc("/games", RequestMatch).Methods("POST")
+	apiRouter.HandleFunc("/games/{gameId}", GetGameState).Methods("GET")
+	return apiRouter
 }
 
 // GET /game endpoint
@@ -25,8 +29,11 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 	board := engine.NewBoard(19)
 
 	game := Game{
-		Board: board,
+		Board: board.Serialize(),
 		Id:    utils.GetSnowflake(),
+		// TODO: Replace the testing values below with actually relevant data.
+		Players: [2]string{"blackUsername", "whiteUsername"},
+		Moves:   []Move{{X: 1, Y: 2, Color: 1}, {X: 3, Y: 4, Color: 2}, {X: 5, Y: 5, Color: 0}, {X: 9, Y: 9, Color: 2}},
 	}
 
 	w.Header().Set("Content-Type", "application/json")
