@@ -13,7 +13,7 @@ func (m *Model) View() string {
 
 	title := fmt.Sprintf("%s%s%s",
 		"Gon",
-		Styles["theme"].Render("g"),
+		Styles["themed"].Render("g"),
 		"o tui",
 	)
 
