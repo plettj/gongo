@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"gongo/internal/config"
 	"gongo/internal/engine"
 	"gongo/internal/utils"
 
@@ -16,15 +17,17 @@ import (
 func NewRouter() *mux.Router {
 	router := mux.NewRouter()
 	apiRouter := router.PathPrefix("/api").Subrouter()
-	// TODO: Remove the /game endpoint and fully replace it with the /games endpoint.
-	apiRouter.HandleFunc("/game", getGame).Methods("GET")
+
+	if config.IsDev() {
+		apiRouter.HandleFunc("/game", getGame).Methods("GET")
+	}
 
 	apiRouter.HandleFunc("/games", RequestMatch).Methods("POST")
 	apiRouter.HandleFunc("/games/{gameId}", GetGameState).Methods("GET")
 	return apiRouter
 }
 
-// GET /game endpoint
+// GET /game endpoint (temporary; development only)
 func getGame(w http.ResponseWriter, r *http.Request) {
 	board := engine.NewBoard(19)
 
